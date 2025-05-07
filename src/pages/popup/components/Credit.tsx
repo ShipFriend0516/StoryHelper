@@ -3,8 +3,21 @@ const Credit = () => {
   return (
     <div className="credit">
       <h3>문의</h3>
-      <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <a
+          className={'credit-top'}
+          style={{ textDecoration: 'none' }}
+          href="https://www.buymeacoffee.com/shipfriend"
+          target="_blank"
+          rel="noreferrer">
+          <img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+            alt="Buy Me A Coffee"
+            style={{ width: '120px', aspectRatio: 217 / 60 }}
+          />
+        </a>
+        <a
+          className={'credit-top'}
           style={{ textDecoration: 'none' }}
           href="https://github.com/ShipFriend0516/TistoryExtension/issues"
           target="_blank"
@@ -18,6 +31,7 @@ const Credit = () => {
           </button>
         </a>
       </div>
+
       <h3>크레딧</h3>
       <div className={'credit-icons'}>
         <a href="https://github.com/ShipFriend0516" target="_blank" rel="noreferrer">
