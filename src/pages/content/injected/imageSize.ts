@@ -70,4 +70,4 @@ async function imageSize() {
   });
 }
 
-export default imageSize();
+export default imageSize;
