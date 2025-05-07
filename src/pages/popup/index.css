@@ -233,3 +233,19 @@ button {
   display: flex;
   gap: 3px;
 }
+
+.credit a {
+  overflow:hidden;;
+}
+
+.credit-icons {
+    display: flex;
+    gap: 5px;
+}
+
+.credit .credit-icon > img {
+  padding: 0;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+}
