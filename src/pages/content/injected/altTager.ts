@@ -1,4 +1,4 @@
-async function func() {
+async function altTager() {
   const result = await chrome.storage.local.get('func_1');
   if (typeof result.func_1 === 'boolean') {
     if (!result.func_1) {
@@ -60,4 +60,4 @@ async function func() {
   });
 }
 
-export default func();
+export default altTager;

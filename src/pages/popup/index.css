@@ -132,6 +132,7 @@ th {
   margin-right: 3px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   border-radius: 4px;
   padding: 6px;
@@ -140,8 +141,14 @@ th {
   transition: 0.2s;
 }
 
+.credit-top {
+  width:120px;
+  aspect-ratio:217/60;
+}
+
 .issueMent:hover {
   background-color: forestgreen;
+
 }
 
 a,
@@ -232,4 +239,20 @@ button {
 .credit > div {
   display: flex;
   gap: 3px;
+}
+
+.credit a {
+  overflow:hidden;;
+}
+
+.credit-icons {
+    display: flex;
+    gap: 5px;
+}
+
+.credit .credit-icon > img {
+  padding: 0;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
 }

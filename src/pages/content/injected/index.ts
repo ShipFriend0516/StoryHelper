@@ -1,6 +1,11 @@
-import('@pages/content/injected/altTager');
 import('@pages/content/injected/keymap');
-import('@pages/content/injected/imageSize');
 import('@pages/content/injected/textCounter');
+import altTager from '@pages/content/injected/altTager';
+import imageSize from '@pages/content/injected/imageSize';
+
+(async () => {
+  await imageSize();
+  await altTager();
+})();
 
 console.log('StoryHelper Load Complete');
