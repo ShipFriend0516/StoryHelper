@@ -1,3 +1,5 @@
+import { throttle } from '@src/shared/util/optimize';
+
 async function textCounter() {
   const result = await chrome.storage.local.get('func_3');
   if (typeof result.func_3 === 'boolean') {
@@ -46,7 +48,7 @@ async function textCounter() {
   }
 
   countWords();
-  post.addEventListener('input', countWords);
+  post.addEventListener('input', throttle(countWords, 500));
 }
 
 export default textCounter();
