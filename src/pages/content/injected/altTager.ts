@@ -2,10 +2,10 @@ async function altTager() {
   const result = await chrome.storage.local.get('func_1');
   if (typeof result.func_1 === 'boolean') {
     if (!result.func_1) {
-      console.log('기능이 비활성화 되어있습니다.');
+      console.log('altTager 기능이 비활성화 되어있습니다.');
       return;
     } else {
-      console.log('기능이 활성화 되어있습니다.');
+      console.log('altTager 기능이 활성화 되어있습니다.');
     }
   }
 
