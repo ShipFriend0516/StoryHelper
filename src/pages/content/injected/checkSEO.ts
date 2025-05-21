@@ -26,7 +26,10 @@ const checkSEO = async () => {
   alertBox.style.backgroundColor = OPTIMIZED_BG;
   alertBox.style.color = '#000';
   alertBox.style.padding = '10px';
-  alertBox.style.borderRadius = '100px';
+  alertBox.style.paddingTop = '4px';
+  alertBox.style.paddingBottom = '4px';
+  alertBox.style.borderRadius = '4px';
+  alertBox.style.fontWeight = 'bold';
   alertBox.style.zIndex = '9999';
   alertBox.style.fontSize = '14px';
   alertBox.style.visibility = 'invisible';
@@ -72,7 +75,6 @@ const checkImgAltTags = (post: Document) => {
 
 const checkH1Tag = (post: Document) => {
   const h2Tags: HTMLHeadingElement[] = Array.from(post.body.getElementsByTagName('h2'));
-  console.log('h2Tags', h2Tags);
   return h2Tags.length === 1;
 };
 
