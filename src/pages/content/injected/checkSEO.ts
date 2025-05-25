@@ -49,7 +49,7 @@ const checkSEO = async () => {
       errors.push(`${NOT_OPTIMIZED} 제목1은 글에 하나만 있어야합니다.`);
     }
     if (!fixedImageHeight) {
-      errors.push(`${NOT_OPTIMIZED} 이미지 높이가 고정되어 있지 않습니다.`);
+      errors.push(`${NOT_OPTIMIZED} 이미지 높이가 고정되어 있지 않은 이미지가 있습니다.`);
     }
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
