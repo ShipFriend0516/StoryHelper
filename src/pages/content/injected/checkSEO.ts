@@ -40,12 +40,16 @@ const checkSEO = async () => {
   const checkSEOOptimize = () => {
     const taggedArr = checkImgAltTags(post);
     const h1Tag = checkH1Tag(post);
+    const fixedImageHeight = checkFixedImageHeight(post);
     const errors = [];
     if (taggedArr.includes(false)) {
       errors.push(`${NOT_OPTIMIZED} Alt 속성이 없는 이미지가 있습니다.`);
     }
     if (!h1Tag) {
-      errors.push(`${NOT_OPTIMIZED}  제목1은 글에 하나만 있어야합니다.`);
+      errors.push(`${NOT_OPTIMIZED} 제목1은 글에 하나만 있어야합니다.`);
+    }
+    if (!fixedImageHeight) {
+      errors.push(`${NOT_OPTIMIZED} 이미지 높이가 고정되어 있지 않습니다.`);
     }
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
@@ -58,8 +62,8 @@ const checkSEO = async () => {
     }
   };
 
+  checkSEOOptimize();
   post.addEventListener('input', throttle(checkSEOOptimize, 1000));
-
   setInterval(checkSEOOptimize, 5000);
 };
 
@@ -75,6 +79,13 @@ const checkImgAltTags = (post: Document) => {
 const checkH1Tag = (post: Document) => {
   const h2Tags: HTMLHeadingElement[] = Array.from(post.body.getElementsByTagName('h2'));
   return h2Tags.length === 1;
+};
+
+const checkFixedImageHeight = (post: Document) => {
+  const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
+
+  if (imgs.length === 0) return true;
+  return imgs.every(img => img.hasAttribute('height') && img.height > 0);
 };
 
 export default checkSEO;
