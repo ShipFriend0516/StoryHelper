@@ -37,38 +37,37 @@ const checkSEO = async () => {
   alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
   document.body.appendChild(alertBox);
 
-  post.addEventListener(
-    'input',
-    throttle(() => {
-      const taggedArr = checkImgAltTags(post);
-      const h1Tag = checkH1Tag(post);
-      const errors = [];
-      if (taggedArr.includes(false)) {
-        errors.push(`${NOT_OPTIMIZED} Alt 속성이 없는 이미지가 있습니다.`);
-      }
-      if (!h1Tag) {
-        errors.push(`${NOT_OPTIMIZED}  제목1은 글에 하나만 있어야합니다.`);
-      }
-      if (errors.length > 0) {
-        alertBox.style.visibility = 'visible';
-        alertBox.innerText = errors.join('\n');
-        alertBox.style.backgroundColor = NOT_OPTIMIZED_BG;
-      } else {
-        alertBox.style.visibility = 'visible';
-        alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
-        alertBox.style.backgroundColor = OPTIMIZED_BG;
-      }
-    }, 1000),
-  );
+  const checkSEOOptimize = () => {
+    const taggedArr = checkImgAltTags(post);
+    const h1Tag = checkH1Tag(post);
+    const errors = [];
+    if (taggedArr.includes(false)) {
+      errors.push(`${NOT_OPTIMIZED} Alt 속성이 없는 이미지가 있습니다.`);
+    }
+    if (!h1Tag) {
+      errors.push(`${NOT_OPTIMIZED}  제목1은 글에 하나만 있어야합니다.`);
+    }
+    if (errors.length > 0) {
+      alertBox.style.visibility = 'visible';
+      alertBox.innerText = errors.join('\n');
+      alertBox.style.backgroundColor = NOT_OPTIMIZED_BG;
+    } else {
+      alertBox.style.visibility = 'visible';
+      alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
+      alertBox.style.backgroundColor = OPTIMIZED_BG;
+    }
+  };
+
+  post.addEventListener('input', throttle(checkSEOOptimize, 1000));
+
+  setInterval(checkSEOOptimize, 5000);
 };
 
 const checkImgAltTags = (post: Document) => {
   const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
   const altTags = Array(imgs.length).fill(false);
   imgs.forEach(img => {
-    if (!img.hasAttribute('alt')) {
-      altTags[imgs.indexOf(img)] = false;
-    }
+    altTags[imgs.indexOf(img)] = img.hasAttribute('alt');
   });
   return altTags;
 };
