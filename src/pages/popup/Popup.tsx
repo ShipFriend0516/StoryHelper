@@ -8,9 +8,14 @@ import Credit from './components/Credit';
 import packageJson from '@root/package.json';
 
 const Popup = () => {
+  const currentVersion = packageJson.version;
   const [selectedTab, setSelectedTab] = useState(0);
   const tabList = ['기능 목록', '단축키 사용자 지정', '크레딧'];
-  const currentVersion = packageJson.version;
+  const tabContent = {
+    0: <FuncList />,
+    1: <FunctionDetailSetting />,
+    2: <Credit version={currentVersion} />,
+  };
 
   return (
     <main className="popup-container">
@@ -28,9 +33,7 @@ const Popup = () => {
           </button>
         ))}
       </div>
-      {selectedTab === 0 && <FuncList />}
-      {selectedTab === 1 && <FunctionDetailSetting />}
-      {selectedTab === 2 && <Credit version={currentVersion} />}
+      {tabContent[selectedTab]}
     </main>
   );
 };
