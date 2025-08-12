@@ -1,5 +1,5 @@
 import { throttle } from '@pages/content/util/optimize';
-import { create$ } from '@root/utils/dom/utilDOM';
+import { $, create$ } from '@root/utils/dom/utilDOM';
 
 const checkSEO = async () => {
   const result = await chrome.storage.local.get('func_4');
@@ -13,8 +13,7 @@ const checkSEO = async () => {
     }
   }
 
-  const post: Document = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
-
+  const post: Document = ($('#editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
   const OPTIMIZED = '✅';
   const NOT_OPTIMIZED = '⚠️';
   const OPTIMIZED_BG = '#d4edda';
