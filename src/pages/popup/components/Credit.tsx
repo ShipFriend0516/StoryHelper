@@ -1,5 +1,8 @@
 import blogIcon from '@assets/img/blog.ico';
-const Credit = () => {
+interface CreditProps {
+  version?: string;
+}
+const Credit = ({ version }: CreditProps) => {
   return (
     <div className="credit">
       <h3>문의</h3>
@@ -60,6 +63,12 @@ const Credit = () => {
           className={'credit-icon'}>
           <img src={blogIcon} alt={'블로그 로고'} />
         </a>
+      </div>
+      <div>
+        <p style={{ color: 'gray' }}>
+          <span>v{version || '1.0.0'}</span>
+          <span style={{ marginLeft: '10px' }}>개발자: ShipFriend0516</span>
+        </p>
       </div>
     </div>
   );
