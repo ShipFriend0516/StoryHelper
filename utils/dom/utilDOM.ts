@@ -19,6 +19,8 @@ interface ElementProperties {
   attributes?: Record<string, string>;
   dataset?: Record<string, string>;
   eventListeners?: Record<string, (event: Event) => void>;
+  src?: string;
+  alt?: string;
 }
 
 export const create$ = <T extends keyof HTMLElementTagNameMap>(
@@ -68,6 +70,12 @@ export const create$ = <T extends keyof HTMLElementTagNameMap>(
       Object.entries(properties.eventListeners).forEach(([event, handler]) => {
         element.addEventListener(event, handler);
       });
+    }
+    if (properties.src) {
+      (element as HTMLImageElement).src = properties.src;
+    }
+    if (properties.alt) {
+      (element as HTMLImageElement).alt = properties.alt;
     }
   }
 
