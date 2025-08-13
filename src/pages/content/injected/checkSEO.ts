@@ -1,4 +1,5 @@
 import { throttle } from '@pages/content/util/optimize';
+import { $, create$ } from '@root/utils/dom/utilDOM';
 
 const checkSEO = async () => {
   const result = await chrome.storage.local.get('func_4');
@@ -12,29 +13,32 @@ const checkSEO = async () => {
     }
   }
 
-  const post: Document = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
-
+  const post: Document = ($('#editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
   const OPTIMIZED = '✅';
   const NOT_OPTIMIZED = '⚠️';
   const OPTIMIZED_BG = '#d4edda';
   const NOT_OPTIMIZED_BG = '#ffcccc';
+  const alertBoxStyle = {
+    position: 'absolute',
+    bottom: '80px',
+    right: '10px',
+    backgroundColor: OPTIMIZED_BG,
+    color: '#000',
+    padding: '10px',
+    paddingTop: '4px',
+    paddingBottom: '4px',
+    borderRadius: '4px',
+    fontWeight: 'bold',
+    zIndex: '9999',
+    fontSize: '14px',
+    visibility: 'invisible',
+  };
 
-  const alertBox = document.createElement('div');
-  alertBox.style.position = 'absolute';
-  alertBox.style.bottom = '80px';
-  alertBox.style.right = '10px';
-  alertBox.style.backgroundColor = OPTIMIZED_BG;
-  alertBox.style.color = '#000';
-  alertBox.style.padding = '10px';
-  alertBox.style.paddingTop = '4px';
-  alertBox.style.paddingBottom = '4px';
-  alertBox.style.borderRadius = '4px';
-  alertBox.style.fontWeight = 'bold';
-  alertBox.style.zIndex = '9999';
-  alertBox.style.fontSize = '14px';
-  alertBox.style.visibility = 'invisible';
+  const alertBox = create$('div', {
+    style: alertBoxStyle,
+    textContent: `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`,
+  });
   alertBox.title = 'SEO 체크 중 입니다..';
-  alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
   document.body.appendChild(alertBox);
 
   const checkSEOOptimize = () => {
