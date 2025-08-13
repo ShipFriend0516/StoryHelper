@@ -54,7 +54,7 @@ async function imageSize() {
     const userInput = window.prompt('본문의 이미지의 크기를 모두 수정합니다:', '');
 
     const imageSize: number = parseInt(userInput);
-    if (userInput !== null) {
+    if (userInput !== null && !isNaN(imageSize)) {
       const post: Document = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
       const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
       imgs.forEach(img => {
@@ -66,6 +66,8 @@ async function imageSize() {
         img.width = imageSize;
         img.height = imageHeight;
       });
+    } else {
+      alert('유효한 숫자를 입력해주세요.');
     }
   });
 }
