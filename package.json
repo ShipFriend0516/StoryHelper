@@ -1,7 +1,7 @@
 {
   "name": "chrome-extension-boilerplate-react-vite",
-  "version": "1.6.0",
-  "description": "티스토리 확장프로그램 StoryHelper",
+  "version": "1.5.1",
+  "description": "chrome extension boilerplate",
   "license": "MIT",
   "repository": {
     "type": "git",

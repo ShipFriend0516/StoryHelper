@@ -1,5 +1,3 @@
-import { $ } from '@root/utils/dom/utilDOM';
-
 interface Shortcut {
   keys: string;
   description: string;
@@ -18,9 +16,9 @@ async function keyMapping() {
     }
   }
 
-  const editorIframe = $('#editor-tistory_ifr') as HTMLIFrameElement;
-  const editor = $('#tinymce', editorIframe.contentDocument);
-
+  const editor = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument.getElementById(
+    'tinymce',
+  );
   async function getCustomShortcuts() {
     try {
       const response = await chrome.storage.local.get('shortcuts');
@@ -107,17 +105,17 @@ async function keyMapping() {
   }
 
   function handlePublishShortcut() {
-    const targetButton = $('#publish-layer-btn') as HTMLElement;
+    const targetButton: HTMLInputElement = document.querySelector('#publish-layer-btn');
     if (targetButton) {
       targetButton.click();
     }
   }
 
   function handleImageUploadShortcut() {
-    const targetButton = $('#mceu_0-open') as HTMLInputElement;
+    const targetButton: HTMLInputElement = document.querySelector('#mceu_0-open');
     if (targetButton) {
       targetButton.click();
-      const imageUploadButton = $('#attach-image') as HTMLInputElement;
+      const imageUploadButton: HTMLInputElement = document.querySelector('#attach-image');
       if (imageUploadButton) {
         imageUploadButton.click();
       }
@@ -125,10 +123,10 @@ async function keyMapping() {
   }
 
   function handleTemplateShortcut() {
-    const targetButton = $('#more-plugin-btn-open') as HTMLInputElement;
+    const targetButton: HTMLInputElement = document.querySelector('#more-plugin-btn-open');
     if (targetButton) {
       targetButton.click();
-      const templateBtn = $('#plugin-template') as HTMLInputElement;
+      const templateBtn: HTMLInputElement = document.querySelector('#plugin-template');
       if (templateBtn) {
         templateBtn.click();
       }
@@ -136,15 +134,15 @@ async function keyMapping() {
   }
 
   function handlePrevPostShortcut() {
-    const targetButton = $('#more-plugin-btn-open') as HTMLInputElement;
+    const targetButton: HTMLInputElement = document.querySelector('#more-plugin-btn-open');
     if (targetButton) {
       targetButton.click();
-      const pluginMenu = $(
+      const pluginMenu: HTMLInputElement = document.querySelector(
         '.mce-tistory-plugin-item.mce-menu-item.mce-menu-item-expand.mce-menu-item-normal.mce-stack-layout-item',
-      ) as HTMLElement;
+      );
       if (pluginMenu) {
         pluginMenu.click();
-        const prevPostPluginBtn = $('#plugin-prev-post') as HTMLInputElement;
+        const prevPostPluginBtn: HTMLInputElement = document.querySelector('#plugin-prev-post');
         if (prevPostPluginBtn) {
           prevPostPluginBtn.click();
         }
@@ -153,12 +151,12 @@ async function keyMapping() {
   }
 
   function handleEditorModeShortcut() {
-    const writeModeMenu = $('#editor-mode-layer-btn-open') as HTMLInputElement;
+    const writeModeMenu: HTMLInputElement = document.querySelector('#editor-mode-layer-btn-open');
     writeModeMenu.click();
-    const editorMode = $('#editorContainer').firstElementChild.className;
+    const editorMode = document.querySelector('#editorContainer').firstElementChild.className;
     const isNormal = editorMode === 'kakao-editor';
-    const normal = $('#editor-mode-kakao') as HTMLInputElement;
-    const html = $('#editor-mode-html') as HTMLInputElement;
+    const normal: HTMLInputElement = document.querySelector('#editor-mode-kakao');
+    const html: HTMLInputElement = document.querySelector('#editor-mode-html');
     if (isNormal) {
       html.click();
     } else {
@@ -170,4 +168,4 @@ async function keyMapping() {
   editor.addEventListener('keydown', handleKeyDown);
 }
 
-export default keyMapping;
+export default keyMapping();
