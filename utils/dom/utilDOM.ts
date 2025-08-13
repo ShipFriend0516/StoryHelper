@@ -1,10 +1,10 @@
-export const $ = (className: string, reference?: Document | HTMLElement) => {
+export const $ = (className: string, reference?: Document | HTMLElement): Element => {
   if (reference)
     return (reference as Document).querySelector(className) || (reference as HTMLElement).querySelector(className);
   else return document.querySelector(className);
 };
 
-export const $$ = (className: string, reference?: Document | HTMLElement) => {
+export const $$ = (className: string, reference?: Document | HTMLElement): NodeListOf<Element> => {
   if (reference)
     (reference as Document).querySelectorAll(className) || (reference as HTMLElement).querySelectorAll(className);
   else return document.querySelectorAll(className);
