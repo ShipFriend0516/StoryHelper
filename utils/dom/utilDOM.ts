@@ -21,6 +21,7 @@ interface ElementProperties {
   eventListeners?: Record<string, (event: Event) => void>;
   src?: string;
   alt?: string;
+  title?: string;
 }
 
 export const create$ = <T extends keyof HTMLElementTagNameMap>(
@@ -76,6 +77,9 @@ export const create$ = <T extends keyof HTMLElementTagNameMap>(
     }
     if (properties.alt) {
       (element as HTMLImageElement).alt = properties.alt;
+    }
+    if (properties.title) {
+      element.title = properties.title;
     }
   }
 
