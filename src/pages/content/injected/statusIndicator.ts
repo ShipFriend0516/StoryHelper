@@ -1,4 +1,5 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
+import { AltTag, Command, ImageScale, SEO, TextCounter } from '@pages/content/injected/components/SVG';
 
 interface FunctionStatus {
   id: string;
@@ -10,11 +11,11 @@ interface FunctionStatus {
 const statusIndicator = async () => {
   // 기능 정의
   const functions: Omit<FunctionStatus, 'enabled'>[] = [
-    { id: 'func_0', name: '추가 단축키', icon: '⌨️' },
-    { id: 'func_1', name: 'Alt태그 입력기', icon: '🏷️' },
-    { id: 'func_2', name: '이미지 사이즈 일괄 조절기능', icon: '📐' },
-    { id: 'func_3', name: '글자수 카운터', icon: '📝' },
-    { id: 'func_4', name: 'SEO 최적화 검증기능', icon: '🔍' },
+    { id: 'func_0', name: '추가 단축키', icon: Command },
+    { id: 'func_1', name: 'Alt태그 입력기', icon: AltTag },
+    { id: 'func_2', name: '이미지 사이즈 일괄 조절기능', icon: ImageScale },
+    { id: 'func_3', name: '글자수 카운터', icon: TextCounter },
+    { id: 'func_4', name: 'SEO 최적화 검증기능', icon: SEO },
   ];
 
   // 컨테이너 스타일
@@ -48,7 +49,8 @@ const statusIndicator = async () => {
     fontSize: '18px',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
-    opacity: '1',
+    opacity: '0.9',
+    color: '#325e4b',
     position: 'relative' as const,
   };
 
@@ -152,12 +154,13 @@ const statusIndicator = async () => {
     // 아이콘
     const icon = create$('div', {
       style: isEnabled ? iconStyleEnabled : iconStyleDisabled,
-      textContent: func.icon,
+
       id: `status-${func.id}`,
       dataset: {
         function: func.id,
         enabled: String(isEnabled),
       },
+      innerHTML: func.icon,
     });
 
     // 호버 효과
