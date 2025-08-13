@@ -168,4 +168,4 @@ async function keyMapping() {
   editor.addEventListener('keydown', handleKeyDown);
 }
 
-export default keyMapping();
+export default keyMapping;
