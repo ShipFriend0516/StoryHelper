@@ -134,6 +134,7 @@ const statusIndicator = async () => {
 
   const headerText = create$('span', {
     textContent: 'StoryHelper',
+    title: '더 많은 옵션은 확장프로그램 설정에서 확인하세요.',
   });
 
   header.appendChild(logo);
