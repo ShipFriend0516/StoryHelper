@@ -12,7 +12,7 @@ const manifest = {
    * if you want to support multiple languages, you can use the following reference
    * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization
    */
-  name: '__MSG_extensionName__' + ' 최고의 티스토리 생산성 확장프로그램',
+  name: 'StoryHelper' + ' 최고의 티스토리 생산성 확장프로그램',
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   permissions: ['storage'],
