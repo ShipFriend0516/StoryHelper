@@ -1,7 +1,11 @@
 import { throttle } from '@pages/content/util/optimize';
 import { $, create$ } from '@root/utils/dom/utilDOM';
+import { showReviewPrompt, shouldShowReviewPrompt } from '@pages/content/injected/reviewPrompt';
 
 const checkSEO = async () => {
+  // Track if we've already counted success in this session
+  let hasCountedSuccessThisSession = false;
+  let hasShownReviewPromptThisSession = false;
   const result = await chrome.storage.local.get('func_4');
 
   if (typeof result.func_4 === 'boolean') {
@@ -41,7 +45,7 @@ const checkSEO = async () => {
   alertBox.title = 'SEO 체크 중 입니다..';
   document.body.appendChild(alertBox);
 
-  const checkSEOOptimize = () => {
+  const checkSEOOptimize = async () => {
     const taggedArr = checkImgAltTags(post);
     const h1Tag = checkH1Tag(post);
     const fixedImageHeight = checkFixedImageHeight(post);
@@ -59,10 +63,26 @@ const checkSEO = async () => {
       alertBox.style.visibility = 'visible';
       alertBox.innerText = errors.join('\n');
       alertBox.style.backgroundColor = NOT_OPTIMIZED_BG;
+      // Reset success flag when errors occur (so next success counts)
+      hasCountedSuccessThisSession = false;
     } else {
       alertBox.style.visibility = 'visible';
       alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
       alertBox.style.backgroundColor = OPTIMIZED_BG;
+
+      // Count success only once per session
+      if (!hasCountedSuccessThisSession) {
+        hasCountedSuccessThisSession = true;
+        const storageResult = await chrome.storage.local.get('seo_success_count');
+        const currentCount = storageResult.seo_success_count || 0;
+        await chrome.storage.local.set({ seo_success_count: currentCount + 1 });
+
+        // Show review prompt if conditions are met
+        if (!hasShownReviewPromptThisSession && (await shouldShowReviewPrompt())) {
+          hasShownReviewPromptThisSession = true;
+          showReviewPrompt();
+        }
+      }
     }
   };
 
