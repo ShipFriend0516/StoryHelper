@@ -1,6 +1,8 @@
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import 'webextension-polyfill';
 
+chrome.runtime.setUninstallURL('https://storyhelper.shipfriend.dev/feedback');
+
 reloadOnUpdate('pages/background');
 
 /**
