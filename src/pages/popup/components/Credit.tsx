@@ -67,7 +67,7 @@ const Credit = ({ version }: CreditProps) => {
       <div>
         <p style={{ color: 'gray' }}>
           <span>v{version || '1.0.0'}</span>
-          <span style={{ marginLeft: '10px' }}>개발자: ShipFriend0516</span>
+          <span style={{ marginLeft: '10px' }}>개발자: ShipFriend</span>
         </p>
       </div>
     </div>
