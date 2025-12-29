@@ -20,22 +20,29 @@ const checkSEO = async () => {
   const post: Document = ($('#editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
   const OPTIMIZED = '✅';
   const NOT_OPTIMIZED = '⚠️';
-  const OPTIMIZED_BG = '#d4edda';
-  const NOT_OPTIMIZED_BG = '#ffcccc';
+  const OPTIMIZED_BG = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
+  const NOT_OPTIMIZED_BG = 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)';
+  const OPTIMIZED_BORDER = '#7d9b76';
+  const NOT_OPTIMIZED_BORDER = '#e57373';
   const alertBoxStyle = {
-    position: 'absolute',
+    position: 'fixed',
     bottom: '80px',
-    right: '10px',
-    backgroundColor: OPTIMIZED_BG,
-    color: '#000',
-    padding: '10px',
-    paddingTop: '4px',
-    paddingBottom: '4px',
-    borderRadius: '4px',
-    fontWeight: 'bold',
+    right: '20px',
+    background: OPTIMIZED_BG,
+    color: '#2e5a2e',
+    padding: '12px 16px',
+    borderRadius: '12px',
+    fontWeight: '600',
     zIndex: '9999',
-    fontSize: '14px',
-    visibility: 'invisible',
+    fontSize: '13px',
+    visibility: 'hidden',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+    border: `1px solid ${OPTIMIZED_BORDER}`,
+    backdropFilter: 'blur(10px)',
+    transition: 'all 0.3s ease',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    lineHeight: '1.5',
+    maxWidth: '320px',
   };
 
   const alertBox = create$('div', {
@@ -62,13 +69,17 @@ const checkSEO = async () => {
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
       alertBox.innerText = errors.join('\n');
-      alertBox.style.backgroundColor = NOT_OPTIMIZED_BG;
+      alertBox.style.background = NOT_OPTIMIZED_BG;
+      alertBox.style.borderColor = NOT_OPTIMIZED_BORDER;
+      alertBox.style.color = '#c62828';
       // Reset success flag when errors occur (so next success counts)
       hasCountedSuccessThisSession = false;
     } else {
       alertBox.style.visibility = 'visible';
       alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
-      alertBox.style.backgroundColor = OPTIMIZED_BG;
+      alertBox.style.background = OPTIMIZED_BG;
+      alertBox.style.borderColor = OPTIMIZED_BORDER;
+      alertBox.style.color = '#2e5a2e';
 
       // Count success only once per session
       if (!hasCountedSuccessThisSession) {
