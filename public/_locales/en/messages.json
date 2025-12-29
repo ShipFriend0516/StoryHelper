@@ -1,10 +1,10 @@
 {
   "extensionName": {
     "description": "Extension name",
-    "message": "StoryHelper - Tistory Blog Writing Assistant"
+    "message": "StoryHelper - Tistory Writing Productivity Tool | Tistory Extension"
   },
   "extensionDescription": {
     "description": "Extension description",
-    "message": "Essential Chrome extension for Tistory bloggers! SEO optimization, bulk image alt tags, character counter, and keyboard shortcuts. Boost your Tistory blog writing productivity."
+    "message": "Boost your search visibility 3x with automatic SEO verification before Tistory posting. Alt tag detection, keyword density analysis, and title optimization checks help you reach page 1 on Naver/Google - essential tool for Tistory bloggers."
   }
 }

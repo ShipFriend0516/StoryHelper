@@ -1,10 +1,10 @@
 {
   "extensionName": {
     "description": "확장프로그램 이름",
-    "message": "StoryHelper - 티스토리 글쓰기 도우미 | 티스토리확장프로그램"
+    "message": "StoryHelper - 티스토리 글쓰기 생산성 툴 | 티스토리 확장프로그램"
   },
   "extensionDescription": {
     "description": "확장프로그램 설명",
-    "message": "티스토리 블로거 필수 확장프로그램! StoryHelper(스토리헬퍼)로 SEO 최적화, 이미지 Alt태그 일괄 입력, 글자수 카운팅, 단축키 기능을 한번에. 티스토리 글쓰기 생산성을 높여보세요."
+    "message": "티스토리 포스팅 전 SEO 자동 검증으로 검색 노출을 3배 높이세요. Alt 태그 누락 감지, 키워드 밀도 분석, 제목 최적화 체크로 네이버/구글 검색 1페이지 진입을 돕는 티스토리 블로거 필수 툴입니다."
   }
 }
