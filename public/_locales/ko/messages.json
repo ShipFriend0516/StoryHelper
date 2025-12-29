@@ -1,10 +1,10 @@
 {
-  "extensionDescription": {
-    "description": "티스토리 SEO 이미지 최적화 도구, 글자수 카운팅, 단축키 추가해주는 확장프로그램입니다.",
-    "message": "티스토리 SEO 이미지 최적화 도구, 글자수 카운팅, 단축키 추가해주는 확장프로그램입니다."
-  },
   "extensionName": {
-    "description": "StoryHelper",
-    "message": "StoryHelper"
+    "description": "확장프로그램 이름",
+    "message": "StoryHelper - 티스토리 글쓰기 도우미 | 티스토리확장프로그램"
+  },
+  "extensionDescription": {
+    "description": "확장프로그램 설명",
+    "message": "티스토리 블로거 필수 확장프로그램! StoryHelper(스토리헬퍼)로 SEO 최적화, 이미지 Alt태그 일괄 입력, 글자수 카운팅, 단축키 기능을 한번에. 티스토리 글쓰기 생산성을 높여보세요."
   }
 }
