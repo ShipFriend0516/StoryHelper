@@ -1,5 +1,5 @@
-/* eslint-disable jsx-a11y/no-autofocus */
 import { useRef, useState, useEffect } from 'react';
+import { getMessage, getAriaLabel } from '@src/shared/utils/i18n';
 
 interface Shortcut {
   keys: string;
@@ -37,7 +37,7 @@ const FunctionDetailSetting = () => {
     },
   ]);
 
-  const customKeyMapRef = useRef<HTMLDivElement>(null);
+  const customKeyMapRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [customizingIndex, setCustomizingIndex] = useState<number | null>(null);
   const [customKeys, setCustomKeys] = useState<string[]>([]);
@@ -73,9 +73,11 @@ const FunctionDetailSetting = () => {
     setIsEditing(true);
     setCustomizingIndex(index);
     setCustomKeys([]);
-    if (customKeyMapRef.current) {
-      customKeyMapRef.current.focus();
-    }
+    setError(''); // 에러 초기화
+
+    setTimeout(() => {
+      customKeyMapRef.current?.focus();
+    }, 100);
   };
 
   const handleCustomKeyMap = (e: React.KeyboardEvent) => {
@@ -131,12 +133,13 @@ const FunctionDetailSetting = () => {
 
   return (
     <div className="funcDetailSetting">
-      <table className="table">
+      <table className="table" aria-label={getAriaLabel('shortcut_table')}>
+        <caption className="sr-only">단축키 목록 및 사용자 지정</caption>
         <thead>
           <tr>
-            <th>단축키</th>
-            <th>설명</th>
-            <th>커스텀</th>
+            <th scope="col">단축키</th>
+            <th scope="col">설명</th>
+            <th scope="col">커스텀</th>
           </tr>
         </thead>
         <tbody>
@@ -146,41 +149,69 @@ const FunctionDetailSetting = () => {
               <td>{shortcut.description}</td>
               <td>
                 {shortcut.custom ? (
-                  <button onClick={() => resetCustomKeys(index)}>초기화</button>
+                  <button
+                    onClick={() => resetCustomKeys(index)}
+                    aria-label={getMessage('aria_shortcut_reset', [shortcut.description])}>
+                    초기화
+                  </button>
                 ) : (
-                  <button onClick={() => startCustom(index)}>수정</button>
+                  <button
+                    onClick={() => startCustom(index)}
+                    aria-label={getMessage('aria_shortcut_edit', [shortcut.description])}>
+                    수정
+                  </button>
                 )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+
+      {/* ARIA Live Region for errors */}
+      {error && (
+        <div role="alert" aria-live="assertive" aria-label={getAriaLabel('error_message')} style={{ color: 'red' }}>
+          {error}
+        </div>
+      )}
+
       {isEditing && (
-        <div style={{ marginTop: '5px', padding: '2px' }}>
+        <div style={{ marginTop: '5px', padding: '2px' }} role="region" aria-label="단축키 편집 영역">
           <div>
             <b>{shortcuts[customizingIndex!].description}</b> 단축키 수정
           </div>
           <div className="customArea">
-            <div className="show">
+            <div className="show" aria-live="polite" aria-atomic="true" role="status">
               {customKeys.length > 0 ? (
                 customKeys.sort((a, b) => b.length - a.length).join(' + ')
               ) : (
                 <p>단축키로 사용할 키 조합을 입력</p>
               )}
             </div>
-            <input type="text" style={{ display: 'hidden' }} onKeyDown={handleCustomKeyMap} autoFocus />
+            <input
+              ref={customKeyMapRef}
+              type="text"
+              onKeyDown={handleCustomKeyMap}
+              aria-label={getAriaLabel('shortcut_input')}
+              className="shortcut-input"
+            />
             <div>
-              <button onClick={saveCustomKeys}>저장</button>
-              <button onClick={() => setIsEditing(false)}>취소</button>
+              <button onClick={saveCustomKeys} aria-label={getAriaLabel('shortcut_save')}>
+                저장
+              </button>
+              <button onClick={() => setIsEditing(false)} aria-label={getAriaLabel('shortcut_cancel')}>
+                취소
+              </button>
             </div>
           </div>
         </div>
       )}
-      <div className="ment" style={{ marginTop: '3px' }}>
+
+      <div className="ment" style={{ marginTop: '3px' }} role="note">
         단축키 수정 후 <b>새로고침</b>해야 적용됩니다.
       </div>
-      <div className="ment">일부 단축키는 작동이 안될 수 있습니다.</div>
+      <div className="ment" role="note">
+        일부 단축키는 작동이 안될 수 있습니다.
+      </div>
     </div>
   );
 };

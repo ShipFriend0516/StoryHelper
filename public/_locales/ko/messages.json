@@ -6,5 +6,81 @@
   "extensionDescription": {
     "description": "확장프로그램 설명",
     "message": "티스토리 포스팅 전 SEO 자동 검증으로 검색 노출을 3배 높이세요. Alt 태그 누락 감지, 키워드 밀도 분석, 제목 최적화 체크로 네이버/구글 검색 1페이지 진입을 돕는 티스토리 블로거 필수 툴입니다."
+  },
+  "aria_popup_main": {
+    "description": "팝업 메인 영역 레이블",
+    "message": "StoryHelper 설정 패널"
+  },
+  "aria_tab_features": {
+    "description": "기능 목록 탭",
+    "message": "기능 목록"
+  },
+  "aria_tab_shortcuts": {
+    "description": "단축키 탭",
+    "message": "단축키 사용자 지정"
+  },
+  "aria_tab_credits": {
+    "description": "크레딧 탭",
+    "message": "크레딧"
+  },
+  "aria_tablist": {
+    "description": "탭 목록",
+    "message": "설정 탭 목록"
+  },
+  "aria_feature_toggle": {
+    "description": "기능 토글 체크박스",
+    "message": "$1 활성화"
+  },
+  "aria_refresh_required": {
+    "description": "새로고침 필요 안내",
+    "message": "기능 변경 후 페이지 새로고침 필요"
+  },
+  "aria_shortcut_table": {
+    "description": "단축키 테이블",
+    "message": "단축키 목록 및 사용자 지정"
+  },
+  "aria_shortcut_reset": {
+    "description": "단축키 초기화 버튼",
+    "message": "$1 단축키 초기화"
+  },
+  "aria_shortcut_edit": {
+    "description": "단축키 수정 버튼",
+    "message": "$1 단축키 수정"
+  },
+  "aria_shortcut_input": {
+    "description": "단축키 입력 필드",
+    "message": "새 단축키 조합을 입력하세요"
+  },
+  "aria_shortcut_save": {
+    "description": "단축키 저장",
+    "message": "변경사항 저장"
+  },
+  "aria_shortcut_cancel": {
+    "description": "단축키 취소",
+    "message": "변경사항 취소"
+  },
+  "aria_error_message": {
+    "description": "에러 메시지 영역",
+    "message": "오류 메시지"
+  },
+  "aria_github_link": {
+    "description": "GitHub 링크",
+    "message": "GitHub에서 이슈 남기기 (새 창)"
+  },
+  "aria_buymeacoffee_link": {
+    "description": "Buy Me A Coffee 링크",
+    "message": "Buy Me A Coffee로 후원하기 (새 창)"
+  },
+  "aria_developer_github": {
+    "description": "개발자 GitHub",
+    "message": "개발자 GitHub 프로필 (새 창)"
+  },
+  "aria_developer_velog": {
+    "description": "개발자 Velog",
+    "message": "개발자 Velog 블로그 (새 창)"
+  },
+  "aria_developer_blog": {
+    "description": "개발자 블로그",
+    "message": "개발자 블로그 (새 창)"
   }
 }

@@ -108,7 +108,7 @@ button {
 }
 
 .tab > button:hover {
-  background-color: #808080;
+  background-color: #5a5a5a; /* 대비비 8.6:1 (AA 통과) */
   color: white;
 }
 
@@ -124,7 +124,7 @@ th {
 
 .ment {
   text-align: center;
-  color: gray;
+  color: #595959; /* 대비비 7.0:1 (AA 통과) */
 }
 
 .issueMent {
@@ -199,8 +199,8 @@ button {
 .customArea input {
   width: 0;
   height: 0;
-  outline: none;
   opacity: 0;
+  /* outline 제거 - .shortcut-input 클래스로 대체 */
 }
 
 .customArea button {
@@ -216,7 +216,7 @@ button {
 .customArea p {
   margin: 0;
   padding: 0;
-  color: gray;
+  color: #595959; /* 대비비 7.0:1 (AA 통과) */
 }
 
 .customArea .show {
@@ -255,4 +255,73 @@ button {
   border-radius: 4px;
   width: 24px;
   height: 24px;
+}
+
+/* ===== 접근성 개선 ===== */
+
+/* 스크린 리더 전용 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 단축키 입력 필드 숨김 (접근성 유지) */
+.shortcut-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+}
+
+/* ===== 포커스 스타일 개선 ===== */
+
+/* 모든 포커스 가능한 요소에 기본 포커스 스타일 */
+a:focus,
+button:focus,
+input:focus,
+[role='tab']:focus {
+  outline: 2px solid #4e6252; /* 브랜드 컬러 */
+  outline-offset: 2px;
+}
+
+/* 키보드 포커스만 표시 (마우스 클릭 시 제거) */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[role='tab']:focus-visible {
+  outline: 2px solid #4e6252;
+  outline-offset: 2px;
+}
+
+/* ===== ARIA 상태 스타일 ===== */
+
+/* aria-selected 시각적 표현 */
+[role='tab'][aria-selected='true'] {
+  background-color: #434242;
+  color: white;
+  font-weight: bold;
+}
+
+[role='tab'][aria-selected='false'] {
+  background-color: transparent;
+  color: black;
+}
+
+/* tabIndex -1인 탭은 포커스 시각화 유지하되 탭 순서에서 제외 */
+[role='tab'][tabindex='-1']:focus {
+  outline: 2px solid #4e6252;
+  outline-offset: 2px;
 }
