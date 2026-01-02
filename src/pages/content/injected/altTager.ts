@@ -1,4 +1,5 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
+import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
 async function altTager() {
   const result = await chrome.storage.local.get('func_1');
@@ -26,54 +27,16 @@ async function altTager() {
 
   menu.insertAdjacentElement('afterend', altTager);
 
-  // Tooltip 요소 생성
-  const tooltip = create$('div', {
-    class: 'tooltip',
-    style: {
-      position: 'absolute',
-      padding: '3px 5px',
-      marginTop: '10px',
-      backgroundColor: '#333',
-      color: '#fff',
-      borderRadius: '2px',
-      fontSize: '11px',
-      visibility: 'hidden',
-      zIndex: '1000',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '4px',
-    },
-  });
-
-  // 로고 이미지 추가
-  const logoUrl = chrome.runtime.getURL('icon-34.png');
-  const logo = create$('img', {
-    src: logoUrl,
-    style: {
-      width: '12px',
-      height: '12px',
-      borderRadius: '2px',
-    },
-  });
-
-  // 텍스트 추가
-  const text = create$('span', {
-    textContent: 'Alt 태그 수정',
-  });
-
-  tooltip.appendChild(logo);
-  tooltip.appendChild(text);
+  // Tooltip 생성
+  const tooltip = createTooltip('Alt 태그 수정');
   document.body.appendChild(tooltip);
 
   const altTagerMouseOverHandler = () => {
-    const rect = altTager.getBoundingClientRect();
-    tooltip.style.left = `${rect.left}px`;
-    tooltip.style.top = `${rect.bottom + window.scrollY}px`;
-    tooltip.style.visibility = 'visible';
+    showTooltip(tooltip, altTager);
   };
 
   const altTagerMouseOutHandler = () => {
-    tooltip.style.visibility = 'hidden';
+    hideTooltip(tooltip);
   };
 
   const altTagerClickHandler = () => {
