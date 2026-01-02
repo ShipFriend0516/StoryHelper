@@ -39,9 +39,30 @@ async function altTager() {
       fontSize: '11px',
       visibility: 'hidden',
       zIndex: '1000',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
     },
+  });
+
+  // 로고 이미지 추가
+  const logoUrl = chrome.runtime.getURL('icon-34.png');
+  const logo = create$('img', {
+    src: logoUrl,
+    style: {
+      width: '12px',
+      height: '12px',
+      borderRadius: '2px',
+    },
+  });
+
+  // 텍스트 추가
+  const text = create$('span', {
     textContent: 'Alt 태그 수정',
   });
+
+  tooltip.appendChild(logo);
+  tooltip.appendChild(text);
   document.body.appendChild(tooltip);
 
   const altTagerMouseOverHandler = () => {
