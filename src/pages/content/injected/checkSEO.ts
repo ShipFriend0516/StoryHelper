@@ -22,10 +22,24 @@ const checkSEO = async () => {
     '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-check-icon lucide-badge-check"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>';
   const NOT_OPTIMIZED_SVG =
     '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
+  const LOADING_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-circle-icon lucide-loader-circle"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
   const OPTIMIZED_BG = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
   const NOT_OPTIMIZED_BG = 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)';
+  const LOADING_BG = 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)';
   const OPTIMIZED_BORDER = '#7d9b76';
   const NOT_OPTIMIZED_BORDER = '#e57373';
+  const LOADING_BORDER = '#64b5f6';
+
+  // CSS 애니메이션 추가
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
   const alertBoxStyle = {
     position: 'fixed',
     bottom: '80px',
@@ -58,6 +72,14 @@ const checkSEO = async () => {
   document.body.appendChild(alertBox);
 
   const checkSEOOptimize = async () => {
+    // 로딩 상태 표시
+    alertBox.style.visibility = 'visible';
+    alertBox.innerHTML = `${LOADING_SVG} 검색엔진 최적화 검증 중...`;
+    alertBox.style.background = LOADING_BG;
+    alertBox.style.borderColor = LOADING_BORDER;
+    alertBox.style.color = '#1976d2';
+
+    // 검증 실행
     const taggedArr = checkImgAltTags(post);
     const h1Tag = checkH1Tag(post);
     const fixedImageHeight = checkFixedImageHeight(post);
@@ -77,7 +99,6 @@ const checkSEO = async () => {
       alertBox.style.background = NOT_OPTIMIZED_BG;
       alertBox.style.borderColor = NOT_OPTIMIZED_BORDER;
       alertBox.style.color = '#c62828';
-      // Reset success flag when errors occur (so next success counts)
       hasCountedSuccessThisSession = false;
     } else {
       alertBox.style.visibility = 'visible';
@@ -86,14 +107,12 @@ const checkSEO = async () => {
       alertBox.style.borderColor = OPTIMIZED_BORDER;
       alertBox.style.color = '#2e5a2e';
 
-      // Count success only once per session
       if (!hasCountedSuccessThisSession) {
         hasCountedSuccessThisSession = true;
         const storageResult = await chrome.storage.local.get('seo_success_count');
         const currentCount = storageResult.seo_success_count || 0;
         await chrome.storage.local.set({ seo_success_count: currentCount + 1 });
 
-        // Show review prompt if conditions are met
         if (!hasShownReviewPromptThisSession && (await shouldShowReviewPrompt())) {
           hasShownReviewPromptThisSession = true;
           showReviewPrompt();
