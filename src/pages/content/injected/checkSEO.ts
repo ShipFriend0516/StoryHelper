@@ -18,8 +18,10 @@ const checkSEO = async () => {
   }
 
   const post: Document = ($('#editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
-  const OPTIMIZED = '✅';
-  const NOT_OPTIMIZED = '⚠️';
+  const OPTIMIZED_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-check-icon lucide-badge-check"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>';
+  const NOT_OPTIMIZED_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
   const OPTIMIZED_BG = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
   const NOT_OPTIMIZED_BG = 'linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%)';
   const OPTIMIZED_BORDER = '#7d9b76';
@@ -28,6 +30,9 @@ const checkSEO = async () => {
     position: 'fixed',
     bottom: '80px',
     right: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
     background: OPTIMIZED_BG,
     color: '#2e5a2e',
     padding: '12px 16px',
@@ -47,7 +52,7 @@ const checkSEO = async () => {
 
   const alertBox = create$('div', {
     style: alertBoxStyle,
-    textContent: `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`,
+    innerHTML: `${OPTIMIZED_SVG} 검색엔진 최적화가 되어있습니다.`,
   });
   alertBox.title = 'SEO 체크 중 입니다..';
   document.body.appendChild(alertBox);
@@ -58,17 +63,17 @@ const checkSEO = async () => {
     const fixedImageHeight = checkFixedImageHeight(post);
     const errors = [];
     if (taggedArr.includes(false)) {
-      errors.push(`${NOT_OPTIMIZED} Alt 속성이 없는 이미지가 있습니다.`);
+      errors.push(`${NOT_OPTIMIZED_SVG} Alt 속성이 없는 이미지가 있습니다.`);
     }
     if (!h1Tag) {
-      errors.push(`${NOT_OPTIMIZED} 제목1은 글에 하나만 있어야합니다.`);
+      errors.push(`${NOT_OPTIMIZED_SVG} 제목1은 글에 하나만 있어야합니다.`);
     }
     if (!fixedImageHeight) {
-      errors.push(`${NOT_OPTIMIZED} 이미지 높이가 고정되어 있지 않은 이미지가 있습니다.`);
+      errors.push(`${NOT_OPTIMIZED_SVG} 이미지 높이가 고정되어 있지 않은 이미지가 있습니다.`);
     }
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
-      alertBox.innerText = errors.join('\n');
+      alertBox.innerHTML = errors.join('\n');
       alertBox.style.background = NOT_OPTIMIZED_BG;
       alertBox.style.borderColor = NOT_OPTIMIZED_BORDER;
       alertBox.style.color = '#c62828';
@@ -76,7 +81,7 @@ const checkSEO = async () => {
       hasCountedSuccessThisSession = false;
     } else {
       alertBox.style.visibility = 'visible';
-      alertBox.innerText = `${OPTIMIZED} 검색엔진 최적화가 되어있습니다.`;
+      alertBox.innerHTML = `${OPTIMIZED_SVG} 검색엔진 최적화가 되어있습니다.`;
       alertBox.style.background = OPTIMIZED_BG;
       alertBox.style.borderColor = OPTIMIZED_BORDER;
       alertBox.style.color = '#2e5a2e';
