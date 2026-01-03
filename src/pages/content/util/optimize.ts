@@ -1,4 +1,4 @@
-export const throttle = (callback: () => void, delay: number) => {
+export const debounce = (callback: () => void, delay: number) => {
   let timeout: ReturnType<typeof setTimeout>;
   return () => {
     if (timeout) {

@@ -1,4 +1,4 @@
-import { throttle } from '@pages/content/util/optimize';
+import { debounce } from '@pages/content/util/optimize';
 
 async function textCounter() {
   const result = await chrome.storage.local.get('func_3');
@@ -34,7 +34,7 @@ async function textCounter() {
   };
 
   countWords();
-  post.addEventListener('input', throttle(countWords, 100));
+  post.addEventListener('input', debounce(countWords, 300));
 }
 
 const createTextCounterBox = () => {

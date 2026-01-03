@@ -1,4 +1,4 @@
-import { throttle } from '@pages/content/util/optimize';
+import { debounce } from '@pages/content/util/optimize';
 import { $, create$ } from '@root/utils/dom/utilDOM';
 import { showReviewPrompt, shouldShowReviewPrompt } from '@pages/content/injected/reviewPrompt';
 
@@ -102,8 +102,15 @@ const checkSEO = async () => {
   };
 
   checkSEOOptimize();
-  post.addEventListener('input', throttle(checkSEOOptimize, 1000));
-  setInterval(checkSEOOptimize, 5000);
+  post.addEventListener('input', debounce(checkSEOOptimize, 2000));
+
+  // MutationObserver로 DOM 변경 감지 (임시저장 복구 등)
+  const observer = new MutationObserver(debounce(checkSEOOptimize, 2000));
+  observer.observe(post.body, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
 };
 
 const checkImgAltTags = (post: Document) => {
