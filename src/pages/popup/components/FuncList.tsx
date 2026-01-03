@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
 import { getMessage, getAriaLabel } from '@src/shared/utils/i18n';
+import NewBadge from './NewBadge';
+
+interface FunctionItem {
+  name: string;
+  isNew?: boolean;
+}
 
 const FuncList = () => {
-  const funcList = [
-    '추가 단축키 활성화',
-    '이미지 대체텍스트 입력기',
-    '이미지 사이즈 조절기',
-    '글자 수 카운터',
-    '검색엔진 최적화 체크',
+  const funcList: FunctionItem[] = [
+    { name: '추가 단축키 활성화', isNew: false },
+    { name: '이미지 대체텍스트 입력기', isNew: false },
+    { name: '이미지 사이즈 조절기', isNew: false },
+    { name: '글자 수 카운터', isNew: false },
+    { name: '검색엔진 최적화 검증 (v1.5)', isNew: true },
   ];
   const [checkedList, setCheckedList] = useState<Record<string, boolean>>({});
 
@@ -23,7 +29,7 @@ const FuncList = () => {
   };
 
   const loadPreChecked = (): void => {
-    const arr = funcList.map((func, i) => `func_${i}`);
+    const arr = funcList.map((_, i) => `func_${i}`);
     chrome.storage.local.get(arr, result => {
       setCheckedList(result);
     });
@@ -47,10 +53,11 @@ const FuncList = () => {
                 id={checkboxId}
                 checked={checkedList[key] || false}
                 onChange={event => onChangeCheckBox(event, i)}
-                aria-label={getMessage('aria_feature_toggle', [func])}
+                aria-label={getMessage('aria_feature_toggle', [func.name])}
               />
               <label htmlFor={checkboxId}>
-                <span>{func}</span>
+                <span>{func.name}</span>
+                <NewBadge isNew={func.isNew} />
               </label>
             </li>
           );

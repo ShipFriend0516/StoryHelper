@@ -42,7 +42,7 @@ button {
 
 .popup-container li {
   list-style: none;
-  font-size: 16px;
+  font-size: 12px;
   display: inline-flex;
   align-items: center;
 }
@@ -56,6 +56,12 @@ button {
   margin-right: 10px;
   width: 24px;
   aspect-ratio: 1/1;
+}
+
+.popup-container .funcList label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .popup-container .funcList span {
@@ -142,13 +148,12 @@ th {
 }
 
 .credit-top {
-  width:120px;
-  aspect-ratio:217/60;
+  width: 120px;
+  aspect-ratio: 217/60;
 }
 
 .issueMent:hover {
   background-color: forestgreen;
-
 }
 
 a,
@@ -242,12 +247,12 @@ button {
 }
 
 .credit a {
-  overflow:hidden;;
+  overflow: hidden;
 }
 
 .credit-icons {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
 }
 
 .credit .credit-icon > img {
