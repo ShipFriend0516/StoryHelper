@@ -47,7 +47,9 @@ const Popup = () => {
         <img src={chrome.runtime.getURL('icon-128.png')} alt="StoryHelper Logo" className="popup-logo" />
         <div>
           <h1>Story Helper</h1>
-          <p>티스토리 글쓰기를 더 편하게</p>
+          <p>
+            티스토리 글쓰기를 <b>더 편리하게</b>
+          </p>
         </div>
       </div>
 
