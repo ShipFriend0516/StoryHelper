@@ -43,8 +43,13 @@ const Popup = () => {
 
   return (
     <main className="popup-container" aria-label={getAriaLabel('popup_main')}>
-      <h1>Story Helper</h1>
-      <p>티스토리 글쓰기를 더 편하게</p>
+      <div className="popup-header">
+        <img src={chrome.runtime.getURL('icon-128.png')} alt="StoryHelper Logo" className="popup-logo" />
+        <div>
+          <h1>Story Helper</h1>
+          <p>티스토리 글쓰기를 더 편하게</p>
+        </div>
+      </div>
 
       <div className="tab" role="tablist" aria-label={getAriaLabel('tablist')}>
         {tabList.map((tab, i) => (

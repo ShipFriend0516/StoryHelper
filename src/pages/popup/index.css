@@ -29,11 +29,29 @@ button {
   border: 1px solid #a3c9aa;
 }
 
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.popup-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
 .popup-container h1 {
   font-size: 32px;
   padding: 0;
   margin: 0;
   color: #4e6252;
+}
+
+.popup-header p {
+  margin: 0;
 }
 
 .popup-container ul {
