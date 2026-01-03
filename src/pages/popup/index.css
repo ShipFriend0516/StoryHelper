@@ -216,8 +216,9 @@ button {
 
 /* 기능 세부 설정 탭 스타일 */
 .funcDetailSetting {
-  /* padding: 4px; */
+  width: 100%;
 }
+
 .funcDetailSetting span {
   margin-right: 6px;
   font-size: 14px;
@@ -229,57 +230,153 @@ button {
 }
 
 .table {
-  margin: 4px;
-  border: 1px solid lightgray;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.table > thead > tr {
-  border-bottom: 1px solid black;
+.table thead {
+  background-color: #4e6252;
+  color: white;
+}
+
+.table thead th {
+  padding: 10px 12px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody td {
+  padding: 5px 6px;
+  font-size: 11px;
+  border-right: 1px solid #f0f0f0;
+  box-sizing: border-box;
+}
+
+.table tbody td:first-child {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #4e6252;
+}
+
+.table tbody td:last-child {
+  border-right: none;
 }
 
 .table button {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
   background-color: white;
-  border-radius: 6px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease;
   text-wrap: nowrap;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.table button:hover {
+  background-color: #4e6252;
+  color: white;
+  border-color: #4e6252;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(78, 98, 82, 0.2);
 }
 .customArea {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  width: calc(100% - 1em);
-  margin-top: 5px;
-
-  background-color: lightgray;
-  border-radius: 4px;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f5f7f6 0%, #e8f0ea 100%);
+  border-radius: 8px;
+  border: 1px solid #d0ddd3;
 }
 
 .customArea input {
   width: 0;
   height: 0;
   opacity: 0;
-  /* outline 제거 - .shortcut-input 클래스로 대체 */
+  position: absolute;
 }
 
-.customArea button {
-  height: 100%;
+.customArea .show {
+  flex: 1;
+  padding: 8px 12px;
   background-color: white;
-  transition: 0.2s;
-}
-
-.customArea button:hover {
-  background-color: #c2dbc7;
+  border-radius: 6px;
+  border: 1px solid #d0ddd3;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4e6252;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
 
 .customArea p {
   margin: 0;
   padding: 0;
-  color: #595959; /* 대비비 7.0:1 (AA 통과) */
+  color: #999;
+  font-style: italic;
 }
 
-.customArea .show {
-  padding: 1em;
+.customArea > div:last-child {
+  display: flex;
+  gap: 4px;
 }
+
+.customArea button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid #d0ddd3;
+  background-color: white;
+  color: #4e6252;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.customArea button:first-child {
+  background-color: #4e6252;
+  color: white;
+  border-color: #4e6252;
+}
+
+.customArea button:first-child:hover {
+  background-color: #3d4f41;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(78, 98, 82, 0.3);
+}
+
+.customArea button:last-child:hover {
+  background-color: #f5f5f5;
+  border-color: #aaa;
+}
+
 .customMent {
   padding: 0.25em;
 }
