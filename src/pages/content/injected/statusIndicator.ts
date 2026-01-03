@@ -275,13 +275,8 @@ const statusIndicator = async () => {
 
   container.appendChild(toggleButton);
 
-  // 최소화 상태 관리
-  let isMinimized = false;
-
-  // 토글 버튼 클릭 이벤트 - 최소화
-  toggleButton.addEventListener('click', () => {
-    isMinimized = true;
-
+  // 최소화 적용 함수
+  const applyMinimizedState = () => {
     // 최소화 - 로고만 보이게
     container.style.padding = '8px';
     container.style.minWidth = '32px';
@@ -311,6 +306,54 @@ const statusIndicator = async () => {
 
     // 컨테이너 호버 효과
     container.title = '클릭하여 확장';
+  };
+
+  // 확대 적용 함수
+  const applyExpandedState = () => {
+    // 확대 - 모든 요소 보이게
+    container.style.padding = '8px 12px';
+    container.style.minWidth = 'auto';
+    container.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+    container.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+    container.style.border = '1px solid rgba(0, 0, 0, 0.05)';
+    headerText.style.display = 'inline';
+    header.style.marginRight = '8px';
+    header.style.paddingRight = '8px';
+    header.style.borderRight = '1px solid #ddd';
+
+    // 토글 버튼 다시 보이기
+    toggleButton.style.display = 'flex';
+
+    // 아이콘들 보이기
+    const iconWrappers = container.querySelectorAll('[id^="status-func"]');
+    iconWrappers.forEach((icon: HTMLElement) => {
+      if (icon.parentElement) {
+        icon.parentElement.style.display = 'block';
+      }
+    });
+
+    // 로고 크기 원래대로
+    logo.style.width = '16px';
+    logo.style.height = '16px';
+    logo.style.cursor = 'default';
+
+    container.title = '';
+  };
+
+  // 최소화 상태 관리 - storage에서 불러오기
+  const storageResult = await chrome.storage.local.get('statusIndicator_minimized');
+  let isMinimized = storageResult.statusIndicator_minimized === true;
+
+  // 초기 상태 적용
+  if (isMinimized) {
+    applyMinimizedState();
+  }
+
+  // 토글 버튼 클릭 이벤트 - 최소화
+  toggleButton.addEventListener('click', async () => {
+    isMinimized = true;
+    await chrome.storage.local.set({ statusIndicator_minimized: true });
+    applyMinimizedState();
   });
 
   // 로고 클릭 이벤트 - 확대
@@ -324,38 +367,11 @@ const statusIndicator = async () => {
     logo.style.transform = 'scale(1)';
   });
 
-  logo.addEventListener('click', () => {
+  logo.addEventListener('click', async () => {
     if (isMinimized) {
       isMinimized = false;
-
-      // 확대 - 모든 요소 보이게
-      container.style.padding = '8px 12px';
-      container.style.minWidth = 'auto';
-      container.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-      container.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-      container.style.border = '1px solid rgba(0, 0, 0, 0.05)';
-      headerText.style.display = 'inline';
-      header.style.marginRight = '8px';
-      header.style.paddingRight = '8px';
-      header.style.borderRight = '1px solid #ddd';
-
-      // 토글 버튼 다시 보이기
-      toggleButton.style.display = 'flex';
-
-      // 아이콘들 보이기
-      const iconWrappers = container.querySelectorAll('[id^="status-func"]');
-      iconWrappers.forEach((icon: HTMLElement) => {
-        if (icon.parentElement) {
-          icon.parentElement.style.display = 'block';
-        }
-      });
-
-      // 로고 크기 원래대로
-      logo.style.width = '16px';
-      logo.style.height = '16px';
-      logo.style.cursor = 'default';
-
-      container.title = '';
+      await chrome.storage.local.set({ statusIndicator_minimized: false });
+      applyExpandedState();
     }
   });
 
