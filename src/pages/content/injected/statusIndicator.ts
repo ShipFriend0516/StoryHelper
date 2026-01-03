@@ -305,7 +305,7 @@ const statusIndicator = async () => {
     logo.style.cursor = 'pointer';
 
     // 컨테이너 호버 효과
-    container.title = '클릭하여 확장';
+    container.title = 'StoryHelper의 기능을 빠르게 토글해보세요';
   };
 
   // 확대 적용 함수
