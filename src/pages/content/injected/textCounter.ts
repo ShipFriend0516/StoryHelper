@@ -1,4 +1,5 @@
-import { throttle } from '@pages/content/util/optimize';
+import { debounce } from '@pages/content/util/optimize';
+import { getEditorElement } from '@root/utils/dom/utilDOM';
 
 async function textCounter() {
   const result = await chrome.storage.local.get('func_3');
@@ -11,9 +12,7 @@ async function textCounter() {
     }
   }
 
-  const post = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument.getElementById(
-    'tinymce',
-  );
+  const post = getEditorElement();
 
   const countWords = () => {
     const text = post.innerText.trim();
@@ -34,7 +33,7 @@ async function textCounter() {
   };
 
   countWords();
-  post.addEventListener('input', throttle(countWords, 100));
+  post.addEventListener('input', debounce(countWords, 300));
 }
 
 const createTextCounterBox = () => {

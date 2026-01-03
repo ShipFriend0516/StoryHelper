@@ -6,5 +6,81 @@
   "extensionDescription": {
     "description": "Extension description",
     "message": "Boost your search visibility 3x with automatic SEO verification before Tistory posting. Alt tag detection, keyword density analysis, and title optimization checks help you reach page 1 on Naver/Google - essential tool for Tistory bloggers."
+  },
+  "aria_popup_main": {
+    "description": "Popup main region label",
+    "message": "StoryHelper settings panel"
+  },
+  "aria_tab_features": {
+    "description": "Features tab",
+    "message": "Feature List"
+  },
+  "aria_tab_shortcuts": {
+    "description": "Shortcuts tab",
+    "message": "Customize Shortcuts"
+  },
+  "aria_tab_credits": {
+    "description": "Credits tab",
+    "message": "Credits"
+  },
+  "aria_tablist": {
+    "description": "Tab list",
+    "message": "Settings tab list"
+  },
+  "aria_feature_toggle": {
+    "description": "Feature toggle checkbox",
+    "message": "Enable $1"
+  },
+  "aria_refresh_required": {
+    "description": "Refresh required notice",
+    "message": "Page refresh required after feature changes"
+  },
+  "aria_shortcut_table": {
+    "description": "Shortcut table",
+    "message": "Keyboard shortcuts list and customization"
+  },
+  "aria_shortcut_reset": {
+    "description": "Reset shortcut button",
+    "message": "Reset $1 shortcut"
+  },
+  "aria_shortcut_edit": {
+    "description": "Edit shortcut button",
+    "message": "Edit $1 shortcut"
+  },
+  "aria_shortcut_input": {
+    "description": "Shortcut input field",
+    "message": "Enter new keyboard shortcut combination"
+  },
+  "aria_shortcut_save": {
+    "description": "Save shortcut",
+    "message": "Save changes"
+  },
+  "aria_shortcut_cancel": {
+    "description": "Cancel shortcut",
+    "message": "Cancel changes"
+  },
+  "aria_error_message": {
+    "description": "Error message region",
+    "message": "Error message"
+  },
+  "aria_github_link": {
+    "description": "GitHub link",
+    "message": "Report issue on GitHub (opens in new window)"
+  },
+  "aria_buymeacoffee_link": {
+    "description": "Buy Me A Coffee link",
+    "message": "Support via Buy Me A Coffee (opens in new window)"
+  },
+  "aria_developer_github": {
+    "description": "Developer GitHub",
+    "message": "Developer GitHub profile (opens in new window)"
+  },
+  "aria_developer_velog": {
+    "description": "Developer Velog",
+    "message": "Developer Velog blog (opens in new window)"
+  },
+  "aria_developer_blog": {
+    "description": "Developer blog",
+    "message": "Developer blog (opens in new window)"
   }
 }

@@ -1,4 +1,4 @@
-import { $ } from '@root/utils/dom/utilDOM';
+import { $, getEditorDocument } from '@root/utils/dom/utilDOM';
 
 interface Shortcut {
   keys: string;
@@ -18,8 +18,7 @@ async function keyMapping() {
     }
   }
 
-  const editorIframe = $('#editor-tistory_ifr') as HTMLIFrameElement;
-  const editor = $('#tinymce', editorIframe.contentDocument);
+  const editor = $('#tinymce', getEditorDocument());
 
   async function getCustomShortcuts() {
     try {

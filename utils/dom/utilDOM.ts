@@ -85,3 +85,18 @@ export const create$ = <T extends keyof HTMLElementTagNameMap>(
 
   return element;
 };
+
+// 티스토리 에디터 관련 유틸리티
+export const getEditorIframe = (): HTMLIFrameElement | null => {
+  return document.getElementById('editor-tistory_ifr') as HTMLIFrameElement;
+};
+
+export const getEditorDocument = (): Document | null => {
+  const iframe = getEditorIframe();
+  return iframe?.contentDocument || null;
+};
+
+export const getEditorElement = (): HTMLElement | null => {
+  const doc = getEditorDocument();
+  return doc?.getElementById('tinymce') || null;
+};
