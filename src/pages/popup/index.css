@@ -387,13 +387,25 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 10px 0;
+  gap: 16px;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.credit h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: #4e6252;
+  font-weight: 700;
 }
 
 .credit > div {
   display: flex;
-  gap: 3px;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .credit a {
@@ -402,14 +414,23 @@ button {
 
 .credit-icons {
   display: flex;
-  gap: 5px;
+  gap: 12px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f5f7f6 0%, #e8f0ea 100%);
+  border-radius: 12px;
+  border: 1px solid #d0ddd3;
 }
 
 .credit .credit-icon > img {
   padding: 0;
-  border-radius: 4px;
-  width: 24px;
-  height: 24px;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
+
+.credit .credit-icon:hover > img {
+  transform: scale(1.15);
 }
 
 /* ===== 접근성 개선 ===== */
