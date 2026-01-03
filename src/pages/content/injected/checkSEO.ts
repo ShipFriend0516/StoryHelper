@@ -32,7 +32,8 @@ const checkSEO = async () => {
     bottom: '80px',
     right: '20px',
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: '8px',
     background: OPTIMIZED_BG,
     color: '#2e5a2e',
@@ -65,24 +66,38 @@ const checkSEO = async () => {
     const fixedImageHeight = checkFixedImageHeight(post);
     const errors = [];
     if (taggedArr.includes(false)) {
-      errors.push(`${NOT_OPTIMIZED_SVG} Alt 속성이 없는 이미지가 있습니다.`);
+      errors.push('Alt 속성이 없는 이미지가 있습니다.');
     }
     if (!h1Tag) {
-      errors.push(`${NOT_OPTIMIZED_SVG} 제목1은 글에 하나만 있어야합니다.`);
+      errors.push('제목1은 글에 하나만 있어야합니다.');
     }
     if (!fixedImageHeight) {
-      errors.push(`${NOT_OPTIMIZED_SVG} 이미지 높이가 고정되어 있지 않은 이미지가 있습니다.`);
+      errors.push('이미지 높이가 고정되어 있지 않은 이미지가 있습니다.');
     }
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
-      alertBox.innerHTML = errors.join('\n');
+      alertBox.innerHTML = errors
+        .map(
+          error => `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          ${NOT_OPTIMIZED_SVG}
+          <span>${error}</span>
+        </div>
+      `,
+        )
+        .join('');
       alertBox.style.background = NOT_OPTIMIZED_BG;
       alertBox.style.borderColor = NOT_OPTIMIZED_BORDER;
       alertBox.style.color = '#c62828';
       hasCountedSuccessThisSession = false;
     } else {
       alertBox.style.visibility = 'visible';
-      alertBox.innerHTML = `${OPTIMIZED_SVG} 검색엔진 최적화가 되어있습니다.`;
+      alertBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          ${OPTIMIZED_SVG}
+          <span>검색엔진 최적화가 되어있습니다.</span>
+        </div>
+      `;
       alertBox.style.background = OPTIMIZED_BG;
       alertBox.style.borderColor = OPTIMIZED_BORDER;
       alertBox.style.color = '#2e5a2e';
