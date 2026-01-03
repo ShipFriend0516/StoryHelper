@@ -1,6 +1,7 @@
 // 사이드바 코드
 
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
+import { getEditorDocument } from '@root/utils/dom/utilDOM';
 
 async function imageSize() {
   const result = await chrome.storage.local.get('func_2');
@@ -41,7 +42,7 @@ async function imageSize() {
 
     const imageSize: number = parseInt(userInput);
     if (userInput !== null && !isNaN(imageSize)) {
-      const post: Document = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
+      const post = getEditorDocument();
       const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
       imgs.forEach(img => {
         const originWidth: number = parseInt(img.dataset.originWidth);

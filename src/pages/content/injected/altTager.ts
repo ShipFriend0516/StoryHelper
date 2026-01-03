@@ -1,4 +1,4 @@
-import { $, create$ } from '@root/utils/dom/utilDOM';
+import { $, create$, getEditorDocument } from '@root/utils/dom/utilDOM';
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
 async function altTager() {
@@ -43,7 +43,7 @@ async function altTager() {
     const userInput = window.prompt('본문의 Alt 태그를 모두 수정합니다:', altTag);
     altTag = userInput || '';
     if (userInput !== null) {
-      const post: Document = (document.getElementById('editor-tistory_ifr') as HTMLIFrameElement).contentDocument;
+      const post = getEditorDocument();
       const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
       imgs.forEach(img => (img.alt = userInput));
     }
