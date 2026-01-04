@@ -1,5 +1,5 @@
 import blogIcon from '@assets/img/blog.ico';
-import { getAriaLabel } from '@src/shared/utils/i18n';
+import { getAriaLabel, getMessage } from '@src/shared/utils/i18n';
 
 interface CreditProps {
   version?: string;
@@ -8,7 +8,7 @@ interface CreditProps {
 const Credit = ({ version }: CreditProps) => {
   return (
     <div className="credit">
-      <h3>문의</h3>
+      <h3>{getMessage('credit_heading_contact')}</h3>
       <div style={{ width: '100%', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
         <a
           className={'credit-top'}
@@ -32,7 +32,7 @@ const Credit = ({ version }: CreditProps) => {
           rel="noreferrer"
           aria-label={getAriaLabel('github_link')}>
           <button className="issueMent">
-            <span>이슈 남기기</span>
+            <span>{getMessage('credit_button_issue')}</span>
             <svg
               role="img"
               aria-hidden="true"
@@ -48,7 +48,7 @@ const Credit = ({ version }: CreditProps) => {
         </a>
       </div>
 
-      <h3>크레딧</h3>
+      <h3>{getMessage('credit_heading_credits')}</h3>
       <div className={'credit-icons'}>
         <a
           href="https://github.com/ShipFriend0516"
@@ -92,7 +92,7 @@ const Credit = ({ version }: CreditProps) => {
       <div>
         <p style={{ color: '#595959' }}>
           <span>v{version || '1.0.0'}</span>
-          <span style={{ marginLeft: '10px' }}>개발자: ShipFriend</span>
+          <span style={{ marginLeft: '10px' }}>{getMessage('ui_developer')}</span>
         </p>
       </div>
     </div>

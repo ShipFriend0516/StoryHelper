@@ -6,12 +6,12 @@ import FuncList from './components/FuncList';
 import FunctionDetailSetting from './components/FunctionDetailSetting';
 import Credit from './components/Credit';
 import packageJson from '@root/package.json';
-import { getAriaLabel } from '@src/shared/utils/i18n';
+import { getAriaLabel, getMessage } from '@src/shared/utils/i18n';
 
 const Popup = () => {
   const currentVersion = packageJson.version;
   const [selectedTab, setSelectedTab] = useState(0);
-  const tabList = ['기능 목록', '단축키 사용자 지정', '크레딧'];
+  const tabList = [getMessage('ui_tab_features'), getMessage('ui_tab_shortcuts'), getMessage('ui_tab_credits')];
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const tabContent = {
@@ -47,9 +47,7 @@ const Popup = () => {
         <img src={chrome.runtime.getURL('icon-128.png')} alt="StoryHelper Logo" className="popup-logo" />
         <div>
           <h1>Story Helper</h1>
-          <p>
-            티스토리 글쓰기를 <b>더 편리하게</b>
-          </p>
+          <p dangerouslySetInnerHTML={{ __html: getMessage('ui_header_title') }} />
         </div>
       </div>
 
@@ -79,4 +77,7 @@ const Popup = () => {
   );
 };
 
-export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);
+export default withErrorBoundary(
+  withSuspense(Popup, <div>{getMessage('msg_loading')}</div>),
+  <div>{getMessage('msg_error')}</div>,
+);

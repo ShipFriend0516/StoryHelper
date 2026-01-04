@@ -154,7 +154,7 @@ export const showReviewPrompt = async () => {
       color: '#333',
       marginBottom: '8px',
     },
-    textContent: '와! SEO 최적화를 5번 성공했어요!',
+    textContent: chrome.i18n.getMessage('review_title'),
   });
 
   // Message
@@ -166,7 +166,7 @@ export const showReviewPrompt = async () => {
       marginBottom: '20px',
       lineHeight: '1.5',
     },
-    textContent: 'StoryHelper가 도움이 되셨나요? 리뷰를 남겨주시면 더 많은 블로거들에게 도움이 됩니다!',
+    textContent: chrome.i18n.getMessage('review_message'),
   });
 
   // Button container
@@ -181,7 +181,7 @@ export const showReviewPrompt = async () => {
   // Review button (primary) - Sage green tone
   const reviewBtn = create$('button', {
     class: ['storyhelper-review-btn', 'storyhelper-review-btn-primary'],
-    textContent: '⭐ 별점 남기기',
+    textContent: chrome.i18n.getMessage('review_button_submit'),
     style: {
       flex: '1',
       padding: '12px 16px',
@@ -204,7 +204,7 @@ export const showReviewPrompt = async () => {
   // Later button (secondary)
   const laterBtn = create$('button', {
     class: ['storyhelper-review-btn', 'storyhelper-review-btn-secondary'],
-    textContent: '나중에',
+    textContent: chrome.i18n.getMessage('review_button_later'),
     style: {
       padding: '12px 16px',
       fontSize: '14px',

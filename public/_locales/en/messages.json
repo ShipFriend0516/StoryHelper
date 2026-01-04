@@ -82,5 +82,241 @@
   "aria_developer_blog": {
     "description": "Developer blog",
     "message": "Developer blog (opens in new window)"
+  },
+  "feature_extra_shortcuts": {
+    "description": "Extra shortcuts feature",
+    "message": "Extra Shortcuts"
+  },
+  "feature_alt_tagger": {
+    "description": "Alt tag editor feature",
+    "message": "Alt Tag Editor"
+  },
+  "feature_image_resizer": {
+    "description": "Bulk image resizer feature",
+    "message": "Bulk Image Resizer"
+  },
+  "feature_text_counter": {
+    "description": "Character counter feature",
+    "message": "Character Counter"
+  },
+  "feature_seo_checker": {
+    "description": "SEO optimization checker feature",
+    "message": "SEO Optimization Checker (v1.5)"
+  },
+  "shortcut_publish": {
+    "description": "Publish post shortcut",
+    "message": "Publish Post"
+  },
+  "shortcut_image_upload": {
+    "description": "Upload image shortcut",
+    "message": "Upload Image"
+  },
+  "shortcut_template": {
+    "description": "Open template shortcut",
+    "message": "Open Template"
+  },
+  "shortcut_prev_post": {
+    "description": "Previous post link shortcut",
+    "message": "Previous Post Link"
+  },
+  "shortcut_editor_mode": {
+    "description": "Switch editor mode shortcut",
+    "message": "Switch Editor Mode"
+  },
+  "ui_tab_features": {
+    "description": "Features tab name",
+    "message": "Feature List"
+  },
+  "ui_tab_shortcuts": {
+    "description": "Shortcuts customization tab name",
+    "message": "Customize Shortcuts"
+  },
+  "ui_tab_credits": {
+    "description": "Credits tab name",
+    "message": "Credits"
+  },
+  "ui_header_title": {
+    "description": "Popup header title",
+    "message": "Make Tistory writing <b>more convenient</b>"
+  },
+  "ui_table_header_shortcut": {
+    "description": "Shortcut table header",
+    "message": "Shortcut"
+  },
+  "ui_table_header_description": {
+    "description": "Description table header",
+    "message": "Description"
+  },
+  "ui_table_header_custom": {
+    "description": "Custom table header",
+    "message": "Custom"
+  },
+  "ui_button_reset": {
+    "description": "Reset button",
+    "message": "Reset"
+  },
+  "ui_button_edit": {
+    "description": "Edit button",
+    "message": "Edit"
+  },
+  "ui_button_save": {
+    "description": "Save button",
+    "message": "Save"
+  },
+  "ui_button_cancel": {
+    "description": "Cancel button",
+    "message": "Cancel"
+  },
+  "ui_status_enabled": {
+    "description": "Enabled status",
+    "message": "Enabled"
+  },
+  "ui_status_disabled": {
+    "description": "Disabled status",
+    "message": "Disabled"
+  },
+  "ui_new_badge": {
+    "description": "New feature badge",
+    "message": "NEW"
+  },
+  "ui_new_feature": {
+    "description": "New feature ARIA label",
+    "message": "New feature"
+  },
+  "ui_developer": {
+    "description": "Developer info",
+    "message": "Developer: ShipFriend"
+  },
+  "msg_refresh_required": {
+    "description": "Refresh required message",
+    "message": "Please <b>refresh</b> the page after enabling/disabling features."
+  },
+  "msg_shortcut_refresh_required": {
+    "description": "Refresh required after shortcut modification",
+    "message": "Please <b>refresh</b> the page after modifying shortcuts."
+  },
+  "msg_shortcut_may_not_work": {
+    "description": "Some shortcuts may not work",
+    "message": "Some shortcuts may not work."
+  },
+  "msg_shortcut_input_prompt": {
+    "description": "Shortcut input prompt",
+    "message": "Enter key combination to use as shortcut"
+  },
+  "msg_loading": {
+    "description": "Loading message",
+    "message": "Loading..."
+  },
+  "msg_error": {
+    "description": "Error occurred message",
+    "message": "An error occurred"
+  },
+  "msg_shortcut_editing": {
+    "description": "Editing shortcut message",
+    "message": "Editing $1 shortcut"
+  },
+  "prompt_alt_tag_bulk_edit": {
+    "description": "Alt tag bulk edit prompt",
+    "message": "Edit all Alt tags in the content:"
+  },
+  "prompt_image_size_bulk_edit": {
+    "description": "Image size bulk edit prompt",
+    "message": "Resize all images in the content:"
+  },
+  "tooltip_alt_tag_editor": {
+    "description": "Alt tag editor tooltip",
+    "message": "Edit Alt Tag"
+  },
+  "tooltip_image_resizer": {
+    "description": "Image resizer tooltip",
+    "message": "Resize All Images"
+  },
+  "tooltip_statusbar": {
+    "description": "Status bar tooltip",
+    "message": "Quickly toggle StoryHelper features"
+  },
+  "tooltip_more_options": {
+    "description": "More options tooltip",
+    "message": "Check extension settings for more options."
+  },
+  "text_counter_label": {
+    "description": "Character counter label",
+    "message": "Character count: $1"
+  },
+  "error_duplicate_shortcut": {
+    "description": "Duplicate shortcut error",
+    "message": "This shortcut is already in use."
+  },
+  "error_invalid_number": {
+    "description": "Invalid number error",
+    "message": "Please enter a valid number."
+  },
+  "error_shortcut_disabled": {
+    "description": "Shortcut disabled message",
+    "message": "Shortcut feature is disabled."
+  },
+  "error_shortcut_enabled": {
+    "description": "Shortcut enabled message",
+    "message": "Shortcut feature is enabled."
+  },
+  "seo_missing_alt": {
+    "description": "Missing alt attribute SEO message",
+    "message": "Some images are missing alt attributes."
+  },
+  "seo_multiple_h1": {
+    "description": "Multiple H1 SEO message",
+    "message": "There should be only one H1 heading in the article."
+  },
+  "seo_fixed_image_height": {
+    "description": "Fixed image height SEO message",
+    "message": "Some images have fixed height."
+  },
+  "seo_optimized": {
+    "description": "SEO optimized message",
+    "message": "Search engine optimized."
+  },
+  "review_title": {
+    "description": "Review prompt title",
+    "message": "Wow! You've successfully optimized SEO 5 times!"
+  },
+  "review_message": {
+    "description": "Review prompt message",
+    "message": "Did StoryHelper help you? Your review helps more bloggers discover this tool!"
+  },
+  "review_button_submit": {
+    "description": "Review submit button",
+    "message": "⭐ Leave a Review"
+  },
+  "review_button_later": {
+    "description": "Review later button",
+    "message": "Later"
+  },
+  "credit_heading_contact": {
+    "description": "Contact section heading",
+    "message": "Contact"
+  },
+  "credit_heading_credits": {
+    "description": "Credits section heading",
+    "message": "Credits"
+  },
+  "credit_button_issue": {
+    "description": "Report issue button",
+    "message": "Report Issue"
+  },
+  "console_feature_activated": {
+    "description": "Feature activated console log",
+    "message": "$1 feature has been activated."
+  },
+  "console_feature_deactivated": {
+    "description": "Feature deactivated console log",
+    "message": "$1 feature has been deactivated."
+  },
+  "console_statusbar_activated": {
+    "description": "Status bar activated console log",
+    "message": "StoryHelper status indicator has been activated."
+  },
+  "console_custom_shortcut": {
+    "description": "Custom shortcut console log",
+    "message": "Custom shortcut: $1"
   }
 }

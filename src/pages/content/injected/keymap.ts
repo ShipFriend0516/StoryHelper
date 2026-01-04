@@ -5,16 +5,17 @@ interface Shortcut {
   description: string;
   function_id?: number;
   custom?: string;
+  shortcut_id: string; // ID for logic (locale-independent)
 }
 
 async function keyMapping() {
   const result = await chrome.storage.local.get('func_0');
   if (typeof result.func_0 === 'boolean') {
     if (!result.func_0) {
-      console.log('단축키 기능이 비활성화 되어있습니다.');
+      console.log(chrome.i18n.getMessage('error_shortcut_disabled'));
       return;
     } else {
-      console.log('단축키 기능이 활성화 되어있습니다.');
+      console.log(chrome.i18n.getMessage('error_shortcut_enabled'));
     }
   }
 
@@ -84,24 +85,24 @@ async function keyMapping() {
   }
 
   function handleShortcut(shortcut: Shortcut) {
-    switch (shortcut.description) {
-      case '글 발행':
+    switch (shortcut.shortcut_id) {
+      case 'PUBLISH':
         handlePublishShortcut();
         break;
-      case '이미지 업로드':
+      case 'IMAGE_UPLOAD':
         handleImageUploadShortcut();
         break;
-      case '서식 창 열기':
+      case 'TEMPLATE':
         handleTemplateShortcut();
         break;
-      case '이전 포스트 링크':
+      case 'PREV_POST':
         handlePrevPostShortcut();
         break;
-      case '에디터 변환':
+      case 'EDITOR_MODE':
         handleEditorModeShortcut();
         break;
       default:
-        console.log(`Custom shortcut: ${shortcut.description}`);
+        console.log(chrome.i18n.getMessage('console_custom_shortcut', [shortcut.shortcut_id]));
     }
   }
 
