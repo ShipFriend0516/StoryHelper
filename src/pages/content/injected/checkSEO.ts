@@ -50,9 +50,9 @@ const checkSEO = async () => {
 
   const alertBox = create$('div', {
     style: alertBoxStyle,
-    innerHTML: `${OPTIMIZED_SVG} 검색엔진 최적화가 되어있습니다.`,
+    innerHTML: `${OPTIMIZED_SVG} ${chrome.i18n.getMessage('seo_optimized')}`,
   });
-  alertBox.title = 'SEO 체크 중 입니다..';
+  alertBox.title = chrome.i18n.getMessage('seo_checking_tooltip');
   document.body.appendChild(alertBox);
 
   const checkSEOOptimize = async () => {
