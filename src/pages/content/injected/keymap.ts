@@ -12,10 +12,7 @@ async function keyMapping() {
   const result = await chrome.storage.local.get('func_0');
   if (typeof result.func_0 === 'boolean') {
     if (!result.func_0) {
-      console.log(chrome.i18n.getMessage('error_shortcut_disabled'));
       return;
-    } else {
-      console.log(chrome.i18n.getMessage('error_shortcut_enabled'));
     }
   }
 

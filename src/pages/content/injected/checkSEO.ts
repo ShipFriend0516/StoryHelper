@@ -3,17 +3,13 @@ import { create$, getEditorDocument } from '@root/utils/dom/utilDOM';
 import { showReviewPrompt, shouldShowReviewPrompt } from '@pages/content/injected/reviewPrompt';
 
 const checkSEO = async () => {
-  // Track if we've already counted success in this session
   let hasCountedSuccessThisSession = false;
   let hasShownReviewPromptThisSession = false;
   const result = await chrome.storage.local.get('func_4');
 
   if (typeof result.func_4 === 'boolean') {
     if (!result.func_4) {
-      console.log('SEO 체크 기능이 비활성화 되어있습니다.');
       return;
-    } else {
-      console.log('SEO 체크 기능이 활성화 되어있습니다.');
     }
   }
 
@@ -54,9 +50,9 @@ const checkSEO = async () => {
 
   const alertBox = create$('div', {
     style: alertBoxStyle,
-    innerHTML: `${OPTIMIZED_SVG} 검색엔진 최적화가 되어있습니다.`,
+    innerHTML: `${OPTIMIZED_SVG} ${chrome.i18n.getMessage('seo_optimized')}`,
   });
-  alertBox.title = 'SEO 체크 중 입니다..';
+  alertBox.title = chrome.i18n.getMessage('seo_checking_tooltip');
   document.body.appendChild(alertBox);
 
   const checkSEOOptimize = async () => {

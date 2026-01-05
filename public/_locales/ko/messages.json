@@ -275,6 +275,14 @@
     "description": "SEO 최적화 완료 메시지",
     "message": "검색엔진 최적화가 되어있습니다."
   },
+  "seo_checking_tooltip": {
+    "description": "SEO 체크 중 툴팁",
+    "message": "SEO 체크 중 입니다.."
+  },
+  "seo_verifying": {
+    "description": "SEO 검증 중 메시지",
+    "message": "검색엔진 최적화 검증 중..."
+  },
   "review_title": {
     "description": "리뷰 프롬프트 제목",
     "message": "와! SEO 최적화를 5번 성공했어요!"

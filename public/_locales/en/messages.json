@@ -275,6 +275,14 @@
     "description": "SEO optimized message",
     "message": "Search engine optimized."
   },
+  "seo_checking_tooltip": {
+    "description": "SEO checking tooltip",
+    "message": "Checking SEO..."
+  },
+  "seo_verifying": {
+    "description": "SEO verifying message",
+    "message": "Verifying search engine optimization..."
+  },
   "review_title": {
     "description": "Review prompt title",
     "message": "Wow! You've successfully optimized SEO 5 times!"
