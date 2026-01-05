@@ -9,11 +9,11 @@ interface FunctionItem {
 
 const FuncList = () => {
   const funcList: FunctionItem[] = [
-    { name: '추가 단축키 활성화', isNew: false },
-    { name: '이미지 대체텍스트 입력기', isNew: false },
-    { name: '이미지 사이즈 조절기', isNew: false },
-    { name: '글자 수 카운터', isNew: false },
-    { name: '검색엔진 최적화 검증 (v1.5)', isNew: true },
+    { name: getMessage('feature_extra_shortcuts'), isNew: false },
+    { name: getMessage('feature_alt_tagger'), isNew: false },
+    { name: getMessage('feature_image_resizer'), isNew: false },
+    { name: getMessage('feature_text_counter'), isNew: false },
+    { name: getMessage('feature_seo_checker'), isNew: true },
   ];
   const [checkedList, setCheckedList] = useState<Record<string, boolean>>({});
 
@@ -64,7 +64,7 @@ const FuncList = () => {
         })}
       </ul>
       <div className="ment" role="note" aria-label={getAriaLabel('refresh_required')}>
-        기능 활성화/비활성화 후 <b>새로고침</b>해야 적용됩니다.
+        <span dangerouslySetInnerHTML={{ __html: getMessage('msg_refresh_required') }} />
       </div>
     </div>
   );

@@ -6,34 +6,40 @@ interface Shortcut {
   description: string;
   function_id?: number;
   custom?: string;
+  shortcut_id: string; // ID for logic (locale-independent)
 }
 
 const FunctionDetailSetting = () => {
   const [shortcuts, setShortcuts] = useState<Shortcut[]>([
     {
       keys: 'Ctrl + Shift + S',
-      description: '글 발행',
+      description: getMessage('shortcut_publish'),
       function_id: 1,
+      shortcut_id: 'PUBLISH',
     },
     {
       keys: 'Ctrl + Shift + U',
-      description: '이미지 업로드',
+      description: getMessage('shortcut_image_upload'),
       function_id: 2,
+      shortcut_id: 'IMAGE_UPLOAD',
     },
     {
       keys: 'Ctrl + Shift + F',
-      description: '서식 창 열기',
+      description: getMessage('shortcut_template'),
       function_id: 3,
+      shortcut_id: 'TEMPLATE',
     },
     {
       keys: 'Ctrl + Shift + P',
-      description: '이전 포스트 링크',
+      description: getMessage('shortcut_prev_post'),
       function_id: 4,
+      shortcut_id: 'PREV_POST',
     },
     {
       keys: 'Ctrl + Shift + Y',
-      description: '에디터 변환',
+      description: getMessage('shortcut_editor_mode'),
       function_id: 5,
+      shortcut_id: 'EDITOR_MODE',
     },
   ]);
 
@@ -119,7 +125,7 @@ const FunctionDetailSetting = () => {
         const keys = customKeys.sort((a, b) => b.length - a.length).join(' + ');
         setShortcuts(prev => prev.map((s, i) => (i === customizingIndex ? { ...s, custom: keys } : s)));
       } else {
-        setError('이미 사용중인 단축키입니다.');
+        setError(getMessage('error_duplicate_shortcut'));
       }
     }
     setIsEditing(false);
@@ -137,9 +143,9 @@ const FunctionDetailSetting = () => {
         <caption className="sr-only">단축키 목록 및 사용자 지정</caption>
         <thead>
           <tr>
-            <th scope="col">단축키</th>
-            <th scope="col">설명</th>
-            <th scope="col">커스텀</th>
+            <th scope="col">{getMessage('ui_table_header_shortcut')}</th>
+            <th scope="col">{getMessage('ui_table_header_description')}</th>
+            <th scope="col">{getMessage('ui_table_header_custom')}</th>
           </tr>
         </thead>
         <tbody>
@@ -152,13 +158,13 @@ const FunctionDetailSetting = () => {
                   <button
                     onClick={() => resetCustomKeys(index)}
                     aria-label={getMessage('aria_shortcut_reset', [shortcut.description])}>
-                    초기화
+                    {getMessage('ui_button_reset')}
                   </button>
                 ) : (
                   <button
                     onClick={() => startCustom(index)}
                     aria-label={getMessage('aria_shortcut_edit', [shortcut.description])}>
-                    수정
+                    {getMessage('ui_button_edit')}
                   </button>
                 )}
               </td>
@@ -170,21 +176,19 @@ const FunctionDetailSetting = () => {
       {/* ARIA Live Region for errors */}
       {error && (
         <div role="alert" aria-live="assertive" aria-label={getAriaLabel('error_message')} style={{ color: 'red' }}>
-          {error}
+          {getMessage('error_duplicate_shortcut')}
         </div>
       )}
 
       {isEditing && (
         <div style={{ marginTop: '5px', padding: '2px' }} role="region" aria-label="단축키 편집 영역">
-          <div>
-            <b>{shortcuts[customizingIndex!].description}</b> 단축키 수정
-          </div>
+          <div>{getMessage('msg_shortcut_editing', [shortcuts[customizingIndex!].description])}</div>
           <div className="customArea">
             <div className="show" aria-live="polite" aria-atomic="true" role="status">
               {customKeys.length > 0 ? (
                 customKeys.sort((a, b) => b.length - a.length).join(' + ')
               ) : (
-                <p>단축키로 사용할 키 조합을 입력</p>
+                <p>{getMessage('msg_shortcut_input_prompt')}</p>
               )}
             </div>
             <input
@@ -196,10 +200,10 @@ const FunctionDetailSetting = () => {
             />
             <div>
               <button onClick={saveCustomKeys} aria-label={getAriaLabel('shortcut_save')}>
-                저장
+                {getMessage('ui_button_save')}
               </button>
               <button onClick={() => setIsEditing(false)} aria-label={getAriaLabel('shortcut_cancel')}>
-                취소
+                {getMessage('ui_button_cancel')}
               </button>
             </div>
           </div>
@@ -207,10 +211,10 @@ const FunctionDetailSetting = () => {
       )}
 
       <div className="ment" style={{ marginTop: '3px' }} role="note">
-        단축키 수정 후 <b>새로고침</b>해야 적용됩니다.
+        <span dangerouslySetInnerHTML={{ __html: getMessage('msg_shortcut_refresh_required') }} />
       </div>
       <div className="ment" role="note">
-        일부 단축키는 작동이 안될 수 있습니다.
+        {getMessage('msg_shortcut_may_not_work')}
       </div>
     </div>
   );

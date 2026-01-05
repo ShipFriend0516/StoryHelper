@@ -82,5 +82,241 @@
   "aria_developer_blog": {
     "description": "개발자 블로그",
     "message": "개발자 블로그 (새 창)"
+  },
+  "feature_extra_shortcuts": {
+    "description": "추가 단축키 기능",
+    "message": "추가 단축키"
+  },
+  "feature_alt_tagger": {
+    "description": "Alt태그 입력기 기능",
+    "message": "Alt태그 입력기"
+  },
+  "feature_image_resizer": {
+    "description": "이미지 사이즈 일괄 조절 기능",
+    "message": "이미지 사이즈 일괄 조절기능"
+  },
+  "feature_text_counter": {
+    "description": "글자수 카운터 기능",
+    "message": "글자수 카운터"
+  },
+  "feature_seo_checker": {
+    "description": "SEO 최적화 검증 기능",
+    "message": "SEO 최적화 검증기능 (v1.5)"
+  },
+  "shortcut_publish": {
+    "description": "글 발행 단축키",
+    "message": "글 발행"
+  },
+  "shortcut_image_upload": {
+    "description": "이미지 업로드 단축키",
+    "message": "이미지 업로드"
+  },
+  "shortcut_template": {
+    "description": "서식 창 열기 단축키",
+    "message": "서식 창 열기"
+  },
+  "shortcut_prev_post": {
+    "description": "이전 포스트 링크 단축키",
+    "message": "이전 포스트 링크"
+  },
+  "shortcut_editor_mode": {
+    "description": "에디터 변환 단축키",
+    "message": "에디터 변환"
+  },
+  "ui_tab_features": {
+    "description": "기능 목록 탭 이름",
+    "message": "기능 목록"
+  },
+  "ui_tab_shortcuts": {
+    "description": "단축키 사용자 지정 탭 이름",
+    "message": "단축키 사용자 지정"
+  },
+  "ui_tab_credits": {
+    "description": "크레딧 탭 이름",
+    "message": "크레딧"
+  },
+  "ui_header_title": {
+    "description": "팝업 헤더 제목",
+    "message": "티스토리 글쓰기를 <b>더 편리하게</b>"
+  },
+  "ui_table_header_shortcut": {
+    "description": "단축키 테이블 헤더",
+    "message": "단축키"
+  },
+  "ui_table_header_description": {
+    "description": "설명 테이블 헤더",
+    "message": "설명"
+  },
+  "ui_table_header_custom": {
+    "description": "커스텀 테이블 헤더",
+    "message": "커스텀"
+  },
+  "ui_button_reset": {
+    "description": "초기화 버튼",
+    "message": "초기화"
+  },
+  "ui_button_edit": {
+    "description": "수정 버튼",
+    "message": "수정"
+  },
+  "ui_button_save": {
+    "description": "저장 버튼",
+    "message": "저장"
+  },
+  "ui_button_cancel": {
+    "description": "취소 버튼",
+    "message": "취소"
+  },
+  "ui_status_enabled": {
+    "description": "활성화 상태",
+    "message": "활성화"
+  },
+  "ui_status_disabled": {
+    "description": "비활성화 상태",
+    "message": "비활성화"
+  },
+  "ui_new_badge": {
+    "description": "새로운 기능 뱃지",
+    "message": "NEW"
+  },
+  "ui_new_feature": {
+    "description": "새로운 기능 ARIA 레이블",
+    "message": "새로운 기능"
+  },
+  "ui_developer": {
+    "description": "개발자 정보",
+    "message": "개발자: ShipFriend"
+  },
+  "msg_refresh_required": {
+    "description": "새로고침 필요 메시지",
+    "message": "기능 활성화/비활성화 후 <b>새로고침</b>해야 적용됩니다."
+  },
+  "msg_shortcut_refresh_required": {
+    "description": "단축키 수정 후 새로고침 필요",
+    "message": "단축키 수정 후 <b>새로고침</b>해야 적용됩니다."
+  },
+  "msg_shortcut_may_not_work": {
+    "description": "일부 단축키 작동 안될 수 있음",
+    "message": "일부 단축키는 작동이 안될 수 있습니다."
+  },
+  "msg_shortcut_input_prompt": {
+    "description": "단축키 입력 안내",
+    "message": "단축키로 사용할 키 조합을 입력"
+  },
+  "msg_loading": {
+    "description": "로딩 중 메시지",
+    "message": "로딩 중..."
+  },
+  "msg_error": {
+    "description": "오류 발생 메시지",
+    "message": "오류가 발생했습니다"
+  },
+  "msg_shortcut_editing": {
+    "description": "단축키 수정 중 메시지",
+    "message": "$1 단축키 수정"
+  },
+  "prompt_alt_tag_bulk_edit": {
+    "description": "Alt 태그 일괄 수정 프롬프트",
+    "message": "본문의 Alt 태그를 모두 수정합니다:"
+  },
+  "prompt_image_size_bulk_edit": {
+    "description": "이미지 크기 일괄 수정 프롬프트",
+    "message": "본문의 이미지의 크기를 모두 수정합니다:"
+  },
+  "tooltip_alt_tag_editor": {
+    "description": "Alt 태그 수정 툴팁",
+    "message": "Alt 태그 수정"
+  },
+  "tooltip_image_resizer": {
+    "description": "이미지 크기 수정 툴팁",
+    "message": "전체 이미지 크기 수정"
+  },
+  "tooltip_statusbar": {
+    "description": "상태바 툴팁",
+    "message": "StoryHelper의 기능을 빠르게 토글해보세요"
+  },
+  "tooltip_more_options": {
+    "description": "더 많은 옵션 툴팁",
+    "message": "더 많은 옵션은 확장프로그램 설정에서 확인하세요."
+  },
+  "text_counter_label": {
+    "description": "글자 수 카운터 레이블",
+    "message": "글자 수: $1"
+  },
+  "error_duplicate_shortcut": {
+    "description": "중복 단축키 에러",
+    "message": "이미 사용중인 단축키입니다."
+  },
+  "error_invalid_number": {
+    "description": "유효하지 않은 숫자 에러",
+    "message": "유효한 숫자를 입력해주세요."
+  },
+  "error_shortcut_disabled": {
+    "description": "단축키 비활성화 메시지",
+    "message": "단축키 기능이 비활성화 되어있습니다."
+  },
+  "error_shortcut_enabled": {
+    "description": "단축키 활성화 메시지",
+    "message": "단축키 기능이 활성화 되어있습니다."
+  },
+  "seo_missing_alt": {
+    "description": "Alt 속성 누락 SEO 메시지",
+    "message": "Alt 속성이 없는 이미지가 있습니다."
+  },
+  "seo_multiple_h1": {
+    "description": "제목1 중복 SEO 메시지",
+    "message": "제목1은 글에 하나만 있어야합니다."
+  },
+  "seo_fixed_image_height": {
+    "description": "이미지 높이 고정 SEO 메시지",
+    "message": "이미지 높이가 고정되어 있지 않은 이미지가 있습니다."
+  },
+  "seo_optimized": {
+    "description": "SEO 최적화 완료 메시지",
+    "message": "검색엔진 최적화가 되어있습니다."
+  },
+  "review_title": {
+    "description": "리뷰 프롬프트 제목",
+    "message": "와! SEO 최적화를 5번 성공했어요!"
+  },
+  "review_message": {
+    "description": "리뷰 프롬프트 메시지",
+    "message": "StoryHelper가 도움이 되셨나요? 리뷰를 남겨주시면 더 많은 블로거들에게 도움이 됩니다!"
+  },
+  "review_button_submit": {
+    "description": "리뷰 제출 버튼",
+    "message": "⭐ 별점 남기기"
+  },
+  "review_button_later": {
+    "description": "리뷰 나중에 버튼",
+    "message": "나중에"
+  },
+  "credit_heading_contact": {
+    "description": "문의 섹션 제목",
+    "message": "문의"
+  },
+  "credit_heading_credits": {
+    "description": "크레딧 섹션 제목",
+    "message": "크레딧"
+  },
+  "credit_button_issue": {
+    "description": "이슈 남기기 버튼",
+    "message": "이슈 남기기"
+  },
+  "console_feature_activated": {
+    "description": "기능 활성화 콘솔 로그",
+    "message": "$1 기능이 활성화되었습니다."
+  },
+  "console_feature_deactivated": {
+    "description": "기능 비활성화 콘솔 로그",
+    "message": "$1 기능이 비활성화되었습니다."
+  },
+  "console_statusbar_activated": {
+    "description": "상태바 활성화 콘솔 로그",
+    "message": "StoryHelper 상태 표시기가 활성화되었습니다."
+  },
+  "console_custom_shortcut": {
+    "description": "커스텀 단축키 콘솔 로그",
+    "message": "Custom shortcut: $1"
   }
 }

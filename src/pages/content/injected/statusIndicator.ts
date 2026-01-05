@@ -11,11 +11,11 @@ interface FunctionStatus {
 const statusIndicator = async () => {
   // 기능 정의
   const functions: Omit<FunctionStatus, 'enabled'>[] = [
-    { id: 'func_0', name: '추가 단축키', icon: Command },
-    { id: 'func_1', name: 'Alt태그 입력기', icon: AltTag },
-    { id: 'func_2', name: '이미지 사이즈 일괄 조절기능', icon: ImageScale },
-    { id: 'func_3', name: '글자수 카운터', icon: TextCounter },
-    { id: 'func_4', name: 'SEO 최적화 검증기능', icon: SEO },
+    { id: 'func_0', name: chrome.i18n.getMessage('feature_extra_shortcuts'), icon: Command },
+    { id: 'func_1', name: chrome.i18n.getMessage('feature_alt_tagger'), icon: AltTag },
+    { id: 'func_2', name: chrome.i18n.getMessage('feature_image_resizer'), icon: ImageScale },
+    { id: 'func_3', name: chrome.i18n.getMessage('feature_text_counter'), icon: TextCounter },
+    { id: 'func_4', name: chrome.i18n.getMessage('feature_seo_checker'), icon: SEO },
   ];
 
   // 컨테이너 스타일
@@ -134,7 +134,7 @@ const statusIndicator = async () => {
 
   const headerText = create$('span', {
     textContent: 'StoryHelper',
-    title: '더 많은 옵션은 확장프로그램 설정에서 확인하세요.',
+    title: chrome.i18n.getMessage('tooltip_more_options'),
   });
 
   header.appendChild(logo);
@@ -202,7 +202,9 @@ const statusIndicator = async () => {
       Object.assign(icon.style, newStatus ? iconStyleEnabled : iconStyleDisabled);
 
       // 툴팁 업데이트
-      const statusText = newStatus ? '활성화' : '비활성화';
+      const statusText = newStatus
+        ? chrome.i18n.getMessage('ui_status_enabled')
+        : chrome.i18n.getMessage('ui_status_disabled');
       const statusColor = newStatus ? '#4CAF50' : '#f44336';
       tooltip.innerHTML = `
         <strong>${func.name}</strong><br/>
@@ -221,7 +223,9 @@ const statusIndicator = async () => {
       style: tooltipStyle,
     });
 
-    const statusText = isEnabled ? '활성화' : '비활성화';
+    const statusText = isEnabled
+      ? chrome.i18n.getMessage('ui_status_enabled')
+      : chrome.i18n.getMessage('ui_status_disabled');
     const statusColor = isEnabled ? '#4CAF50' : '#f44336';
     tooltip.innerHTML = `
       <strong>${func.name}</strong><br/>
@@ -305,7 +309,7 @@ const statusIndicator = async () => {
     logo.style.cursor = 'pointer';
 
     // 컨테이너 호버 효과
-    container.title = 'StoryHelper의 기능을 빠르게 토글해보세요';
+    container.title = chrome.i18n.getMessage('tooltip_statusbar');
   };
 
   // 확대 적용 함수
@@ -396,7 +400,9 @@ const statusIndicator = async () => {
             const tooltip = icon.nextElementSibling as HTMLElement;
             if (tooltip) {
               const funcName = functions.find(f => f.id === key)?.name || '';
-              const statusText = isEnabled ? '활성화' : '비활성화';
+              const statusText = isEnabled
+                ? chrome.i18n.getMessage('ui_status_enabled')
+                : chrome.i18n.getMessage('ui_status_disabled');
               const statusColor = isEnabled ? '#4CAF50' : '#f44336';
               tooltip.innerHTML = `
                 <strong>${funcName}</strong><br/>
@@ -412,7 +418,7 @@ const statusIndicator = async () => {
     }
   });
 
-  console.log('StoryHelper 상태 표시기가 활성화되었습니다.');
+  console.log(chrome.i18n.getMessage('console_statusbar_activated'));
 };
 
 export default statusIndicator;

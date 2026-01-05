@@ -66,13 +66,13 @@ const checkSEO = async () => {
     const fixedImageHeight = checkFixedImageHeight(post);
     const errors = [];
     if (taggedArr.includes(false)) {
-      errors.push('Alt 속성이 없는 이미지가 있습니다.');
+      errors.push(chrome.i18n.getMessage('seo_missing_alt'));
     }
     if (!h1Tag) {
-      errors.push('제목1은 글에 하나만 있어야합니다.');
+      errors.push(chrome.i18n.getMessage('seo_multiple_h1'));
     }
     if (!fixedImageHeight) {
-      errors.push('이미지 높이가 고정되어 있지 않은 이미지가 있습니다.');
+      errors.push(chrome.i18n.getMessage('seo_fixed_image_height'));
     }
     if (errors.length > 0) {
       alertBox.style.visibility = 'visible';
@@ -95,7 +95,7 @@ const checkSEO = async () => {
       alertBox.innerHTML = `
         <div style="display: flex; align-items: center; gap: 8px;">
           ${OPTIMIZED_SVG}
-          <span>검색엔진 최적화가 되어있습니다.</span>
+          <span>${chrome.i18n.getMessage('seo_optimized')}</span>
         </div>
       `;
       alertBox.style.background = OPTIMIZED_BG;

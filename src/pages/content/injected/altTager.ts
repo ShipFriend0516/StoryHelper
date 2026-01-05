@@ -28,7 +28,7 @@ async function altTager() {
   menu.insertAdjacentElement('afterend', altTager);
 
   // Tooltip 생성
-  const tooltip = createTooltip('Alt 태그 수정');
+  const tooltip = createTooltip(chrome.i18n.getMessage('tooltip_alt_tag_editor'));
   document.body.appendChild(tooltip);
 
   const altTagerMouseOverHandler = () => {
@@ -40,7 +40,7 @@ async function altTager() {
   };
 
   const altTagerClickHandler = () => {
-    const userInput = window.prompt('본문의 Alt 태그를 모두 수정합니다:', altTag);
+    const userInput = window.prompt(chrome.i18n.getMessage('prompt_alt_tag_bulk_edit'), altTag);
     altTag = userInput || '';
     if (userInput !== null) {
       const post = getEditorDocument();

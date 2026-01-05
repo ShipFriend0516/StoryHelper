@@ -20,7 +20,7 @@ async function textCounter() {
 
     // 글자 수와 단어 수를 화면에 표시하는 요소 생성
     const counter = createTextCounterBox();
-    counter.innerHTML = `글자 수: ${charCount}`;
+    counter.innerHTML = chrome.i18n.getMessage('text_counter_label', [charCount.toString()]);
 
     // 기존의 글자 수 표시 요소 제거
     const existingCountElement = document.getElementById('text-counter');

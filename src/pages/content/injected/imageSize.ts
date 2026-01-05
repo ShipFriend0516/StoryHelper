@@ -25,7 +25,7 @@ async function imageSize() {
   menu.insertAdjacentElement('afterend', imageSizer);
 
   // Tooltip 생성
-  const tooltip = createTooltip('전체 이미지 크기 수정');
+  const tooltip = createTooltip(chrome.i18n.getMessage('tooltip_image_resizer'));
   document.body.appendChild(tooltip);
 
   // 마우스 이벤트 핸들러 추가
@@ -38,7 +38,7 @@ async function imageSize() {
   });
 
   imageSizer.addEventListener('click', () => {
-    const userInput = window.prompt('본문의 이미지의 크기를 모두 수정합니다:', '');
+    const userInput = window.prompt(chrome.i18n.getMessage('prompt_image_size_bulk_edit'), '');
 
     const imageSize: number = parseInt(userInput);
     if (userInput !== null && !isNaN(imageSize)) {
@@ -54,7 +54,7 @@ async function imageSize() {
         img.height = imageHeight;
       });
     } else {
-      alert('유효한 숫자를 입력해주세요.');
+      alert(chrome.i18n.getMessage('error_invalid_number'));
     }
   });
 }
