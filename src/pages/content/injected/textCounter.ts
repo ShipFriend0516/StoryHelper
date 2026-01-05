@@ -5,10 +5,7 @@ async function textCounter() {
   const result = await chrome.storage.local.get('func_3');
   if (typeof result.func_3 === 'boolean') {
     if (!result.func_3) {
-      console.log('글자 수 세기 기능이 비활성화 되어있습니다.');
       return;
-    } else {
-      console.log('글자 수 세기 기능이 활성화 되어있습니다.');
     }
   }
 
