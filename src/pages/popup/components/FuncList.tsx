@@ -3,12 +3,13 @@ import { getMessage, getAriaLabel } from '@src/shared/utils/i18n';
 import NewBadge from './NewBadge';
 import { FEATURES } from '@src/shared/config/features';
 
+const funcList = FEATURES.map(f => ({
+  key: f.key,
+  name: getMessage(f.messageKey),
+  isNew: f.isNew,
+}));
+
 const FuncList = () => {
-  const funcList = FEATURES.map(f => ({
-    key: f.key,
-    name: getMessage(f.messageKey),
-    isNew: f.isNew,
-  }));
   const [checkedList, setCheckedList] = useState<Record<string, boolean>>({});
 
   const onChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>, funcKey: string) => {
@@ -21,15 +22,11 @@ const FuncList = () => {
     chrome.storage.local.set({ [funcKey]: target.checked });
   };
 
-  const loadPreChecked = (): void => {
+  useEffect(() => {
     const arr = funcList.map(f => f.key);
     chrome.storage.local.get(arr, result => {
       setCheckedList(result);
     });
-  };
-
-  useEffect(() => {
-    loadPreChecked();
   }, []);
 
   return (

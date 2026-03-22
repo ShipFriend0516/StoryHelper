@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
+import StatusIndicator from './StatusIndicator';
 
 export default function App() {
-  useEffect(() => {
-    console.log('content view loaded');
-  }, []);
-
-  return <div className="">content view</div>;
+  return <StatusIndicator />;
 }
