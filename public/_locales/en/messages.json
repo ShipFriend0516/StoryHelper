@@ -103,6 +103,10 @@
     "description": "SEO optimization checker feature",
     "message": "SEO Optimization Checker (v1.5)"
   },
+  "feature_preview_side_view": {
+    "description": "Preview side view feature",
+    "message": "Preview Side View (v1.7)"
+  },
   "shortcut_publish": {
     "description": "Publish post shortcut",
     "message": "Publish Post"

@@ -103,6 +103,10 @@
     "description": "SEO 최적화 검증 기능",
     "message": "SEO 최적화 검증기능 (v1.5)"
   },
+  "feature_preview_side_view": {
+    "description": "미리보기 사이드뷰 기능",
+    "message": "미리보기 사이드뷰 (v1.7)"
+  },
   "shortcut_publish": {
     "description": "글 발행 단축키",
     "message": "글 발행"
