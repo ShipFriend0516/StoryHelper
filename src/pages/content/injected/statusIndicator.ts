@@ -1,5 +1,6 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
 import { AltTag, Command, ImageScale, SEO, TextCounter } from '@pages/content/injected/components/SVG';
+import { FEATURES } from '@src/shared/config/features';
 
 interface FunctionStatus {
   id: string;
@@ -8,15 +9,21 @@ interface FunctionStatus {
   enabled: boolean;
 }
 
+const FEATURE_ICONS: Record<string, string> = {
+  func_0: Command,
+  func_1: AltTag,
+  func_2: ImageScale,
+  func_3: TextCounter,
+  func_4: SEO,
+};
+
 const statusIndicator = async () => {
   // 기능 정의
-  const functions: Omit<FunctionStatus, 'enabled'>[] = [
-    { id: 'func_0', name: chrome.i18n.getMessage('feature_extra_shortcuts'), icon: Command },
-    { id: 'func_1', name: chrome.i18n.getMessage('feature_alt_tagger'), icon: AltTag },
-    { id: 'func_2', name: chrome.i18n.getMessage('feature_image_resizer'), icon: ImageScale },
-    { id: 'func_3', name: chrome.i18n.getMessage('feature_text_counter'), icon: TextCounter },
-    { id: 'func_4', name: chrome.i18n.getMessage('feature_seo_checker'), icon: SEO },
-  ];
+  const functions: Omit<FunctionStatus, 'enabled'>[] = FEATURES.map(f => ({
+    id: f.key,
+    name: chrome.i18n.getMessage(f.messageKey),
+    icon: FEATURE_ICONS[f.key],
+  }));
 
   // 컨테이너 스타일
   const containerStyle = {

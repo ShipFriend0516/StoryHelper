@@ -1,24 +1,17 @@
 import { useState, useEffect } from 'react';
 import { getMessage, getAriaLabel } from '@src/shared/utils/i18n';
 import NewBadge from './NewBadge';
-
-interface FunctionItem {
-  name: string;
-  isNew?: boolean;
-}
+import { FEATURES } from '@src/shared/config/features';
 
 const FuncList = () => {
-  const funcList: FunctionItem[] = [
-    { name: getMessage('feature_extra_shortcuts'), isNew: false },
-    { name: getMessage('feature_alt_tagger'), isNew: false },
-    { name: getMessage('feature_image_resizer'), isNew: false },
-    { name: getMessage('feature_text_counter'), isNew: false },
-    { name: getMessage('feature_seo_checker'), isNew: true },
-  ];
+  const funcList = FEATURES.map(f => ({
+    key: f.key,
+    name: getMessage(f.messageKey),
+    isNew: f.isNew,
+  }));
   const [checkedList, setCheckedList] = useState<Record<string, boolean>>({});
 
-  const onChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const funcKey: string = `func_${index}`;
+  const onChangeCheckBox = (event: React.ChangeEvent<HTMLInputElement>, funcKey: string) => {
     const target = event.target as HTMLInputElement;
 
     setCheckedList(prev => {
@@ -29,7 +22,7 @@ const FuncList = () => {
   };
 
   const loadPreChecked = (): void => {
-    const arr = funcList.map((_, i) => `func_${i}`);
+    const arr = funcList.map(f => f.key);
     chrome.storage.local.get(arr, result => {
       setCheckedList(result);
     });
@@ -43,16 +36,15 @@ const FuncList = () => {
     <div>
       <ul className="funcList">
         {funcList.map((func, i) => {
-          const key = `func_${i}`;
           const checkboxId = `feature-checkbox-${i}`;
 
           return (
-            <li key={i}>
+            <li key={func.key}>
               <input
                 type="checkbox"
                 id={checkboxId}
-                checked={checkedList[key] || false}
-                onChange={event => onChangeCheckBox(event, i)}
+                checked={checkedList[func.key] || false}
+                onChange={event => onChangeCheckBox(event, func.key)}
                 aria-label={getMessage('aria_feature_toggle', [func.name])}
               />
               <label htmlFor={checkboxId}>
