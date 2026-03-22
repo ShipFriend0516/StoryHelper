@@ -20,3 +20,5 @@ public/manifest.json
 CLAUDE.md
 
 /DOCS
+
+.claude/
