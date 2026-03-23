@@ -3,6 +3,12 @@ import 'webextension-polyfill';
 
 chrome.runtime.setUninstallURL('https://storyhelper.shipfriend.dev/feedback');
 
+chrome.runtime.onInstalled.addListener(details => {
+  if (details.reason === 'install') {
+    chrome.tabs.create({ url: 'https://storyhelper.shipfriend.dev/introduce' });
+  }
+});
+
 reloadOnUpdate('pages/background');
 
 /**
