@@ -1,40 +1,139 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
 
-// const WRAPPER_ID = 'sh-side-view-wrapper'; // reserved for future use
 const PANEL_ID = 'sh-preview-panel';
 const PANEL_IFRAME_ID = 'sh-preview-iframe';
 const MENU_ITEM_ID = 'sh-side-view-menu-item';
 const TOOLBAR_BTN_ID = 'sh-side-view-toolbar-btn';
+const INTERCEPT_STYLE_ID = 'sh-preview-intercept-style';
 
 let sideViewActive = false;
-let modalObserver: MutationObserver | null = null;
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 let editorInputHandler: (() => void) | null = null;
+let srcdocTemplate: string | null = null;
+
+// ── CSS 차단 ──────────────────────────────────────────────────────
+
+function injectInterceptStyle() {
+  if (document.getElementById(INTERCEPT_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = INTERCEPT_STYLE_ID;
+  style.textContent = `.ReactModal__Overlay { visibility: hidden !important; pointer-events: none !important; }`;
+  document.head.appendChild(style);
+}
+
+function removeInterceptStyle() {
+  document.getElementById(INTERCEPT_STYLE_ID)?.remove();
+}
+
+// ── 미리보기 ──────────────────────────────────────────────────────
+
+/**
+ * 최초 1회: 미리보기 버튼 클릭 → srcdoc 캐싱
+ * 이후: 캐시된 템플릿에 TinyMCE 현재 내용 치환 (버튼 클릭 없음)
+ */
+function loadPreview() {
+  if (srcdocTemplate) {
+    updatePreviewFromTemplate();
+    return;
+  }
+  loadInitialPreview();
+}
+
+function loadInitialPreview(attempt = 0) {
+  if (!sideViewActive) return;
+  if (attempt > 30) return;
+
+  const previewBtn = document.getElementById('preview-btn');
+  if (!previewBtn) {
+    setTimeout(() => loadInitialPreview(attempt + 1), 100);
+    return;
+  }
+
+  // 이미 열려있으면 먼저 닫기
+  if (previewBtn.getAttribute('aria-expanded') === 'true') {
+    previewBtn.click();
+    setTimeout(() => loadInitialPreview(attempt + 1), 200);
+    return;
+  }
+
+  previewBtn.click();
+  pollForTemplate(previewBtn);
+}
+
+function pollForTemplate(previewBtn: HTMLElement, attempt = 0) {
+  if (!sideViewActive) return;
+  if (attempt > 30) return;
+
+  const overlay = document.querySelector('.ReactModal__Overlay');
+  const sourceIframe = overlay?.querySelector<HTMLIFrameElement>('iframe[name="previewIframe"]');
+
+  if (sourceIframe?.srcdoc) {
+    srcdocTemplate = sourceIframe.srcdoc;
+
+    // 패널에 첫 렌더
+    const panelIframe = document.getElementById(PANEL_IFRAME_ID) as HTMLIFrameElement | null;
+    if (panelIframe) panelIframe.srcdoc = srcdocTemplate;
+
+    // 모달 닫기
+    if (previewBtn.getAttribute('aria-expanded') === 'true') {
+      previewBtn.click();
+    }
+    return;
+  }
+
+  setTimeout(() => pollForTemplate(previewBtn, attempt + 1), 100);
+}
+
+/**
+ * 캐시된 템플릿에 현재 TinyMCE 내용을 치환해 패널 업데이트
+ */
+function updatePreviewFromTemplate() {
+  if (!srcdocTemplate) return;
+
+  const editorIframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
+  const editorContent = editorIframe?.contentDocument?.body?.innerHTML ?? '';
+  const postTitle = (document.getElementById('post-title-inp') as HTMLTextAreaElement | null)?.value ?? '';
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(srcdocTemplate, 'text/html');
+
+  // 본문 교체
+  const contentArea = doc.querySelector('.tt_article_useless_p_margin');
+  if (contentArea) contentArea.innerHTML = editorContent;
+
+  // 제목 교체
+  const titleEl = doc.querySelector('.article-info .title');
+  if (titleEl) titleEl.textContent = postTitle;
+
+  const panelIframe = document.getElementById(PANEL_IFRAME_ID) as HTMLIFrameElement | null;
+  if (panelIframe) panelIframe.srcdoc = doc.documentElement.outerHTML;
+}
 
 // ── 에디터 입력 감지 ──────────────────────────────────────────────
 
 function attachEditorListener() {
-  const iframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
-  if (!iframe) return;
+  const tryAttach = (attempt = 0) => {
+    if (!sideViewActive) return;
+    if (attempt > 25) return;
 
-  const tryAttach = () => {
-    const editorBody = iframe.contentDocument?.body;
-    if (!editorBody) return;
+    const iframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
+    const iframeBody = iframe?.contentDocument?.body ?? null;
 
-    editorInputHandler = () => {
+    if (!iframeBody) {
+      setTimeout(() => tryAttach(attempt + 1), 200);
+      return;
+    }
+
+    const handler = () => {
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(loadPreview, 1500);
     };
-    editorBody.addEventListener('input', editorInputHandler);
+
+    iframeBody.addEventListener('input', handler);
+    editorInputHandler = () => iframeBody.removeEventListener('input', handler);
   };
 
-  // iframe이 이미 로드된 경우
-  if (iframe.contentDocument?.readyState === 'complete') {
-    tryAttach();
-  } else {
-    // 아직 로드 중이면 load 이벤트 후 부착
-    iframe.addEventListener('load', tryAttach, { once: true });
-  }
+  tryAttach();
 }
 
 function detachEditorListener() {
@@ -42,33 +141,15 @@ function detachEditorListener() {
     clearTimeout(debounceTimer);
     debounceTimer = null;
   }
-
-  const iframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
-  const editorBody = iframe?.contentDocument?.body;
-  if (editorBody && editorInputHandler) {
-    editorBody.removeEventListener('input', editorInputHandler);
-  }
+  editorInputHandler?.();
   editorInputHandler = null;
 }
 
-// ── 패널 내부 구조 ────────────────────────────────────────────────
+// ── 패널 UI ───────────────────────────────────────────────────────
 
 function buildPreviewPanel(): HTMLElement {
-  const panel = create$('div', {
-    id: PANEL_ID,
-    style: {
-      flex: '0 0 50%',
-      maxWidth: '50%',
-      minWidth: '0',
-      borderLeft: '2px solid #e8e8e8',
-      display: 'flex',
-      flexDirection: 'column',
-      boxSizing: 'border-box',
-      backgroundColor: '#f9f9f9',
-    },
-  });
+  const panel = create$('div', { id: PANEL_ID });
 
-  // 헤더
   const header = create$('div', {
     style: {
       display: 'flex',
@@ -98,21 +179,19 @@ function buildPreviewPanel(): HTMLElement {
       color: '#555',
     },
   });
-  refreshBtn.addEventListener('click', loadPreview);
+  refreshBtn.addEventListener('click', () => {
+    // 강제 전체 재로드 (템플릿 초기화)
+    srcdocTemplate = null;
+    loadPreview();
+  });
 
   header.appendChild(title);
   header.appendChild(refreshBtn);
 
-  // iframe
   const iframe = create$('iframe', {
     id: PANEL_IFRAME_ID,
     attributes: { sandbox: 'allow-scripts allow-same-origin' },
-    style: {
-      flex: '1',
-      width: '100%',
-      border: 'none',
-      minHeight: '600px',
-    },
+    style: { flex: '1', width: '100%', border: 'none', minHeight: '600px' },
   });
 
   panel.appendChild(header);
@@ -120,114 +199,27 @@ function buildPreviewPanel(): HTMLElement {
   return panel;
 }
 
-// ── 미리보기 로드 ────────────────────────────────────────────────
-
-const INTERCEPT_STYLE_ID = 'sh-preview-intercept-style';
-
-// 사이드뷰 활성 중 항상 유지 — visibility:hidden으로 React 내부 렌더링은 허용
-function injectInterceptStyle() {
-  if (document.getElementById(INTERCEPT_STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = INTERCEPT_STYLE_ID;
-  style.textContent = `.ReactModal__Overlay { visibility: hidden !important; pointer-events: none !important; }`;
-  document.head.appendChild(style);
-}
-
-function removeInterceptStyle() {
-  document.getElementById(INTERCEPT_STYLE_ID)?.remove();
-}
-
-function loadPreview() {
-  const previewBtn = document.getElementById('preview-btn');
-  if (!previewBtn) return;
-
-  modalObserver?.disconnect();
-
-  const isOpen = previewBtn.getAttribute('aria-expanded') === 'true';
-
-  if (isOpen) {
-    // 열려있으면 닫고 → 짧은 대기 → 다시 열기
-    previewBtn.click();
-    setTimeout(() => openAndCapture(previewBtn), 80);
-  } else {
-    openAndCapture(previewBtn);
-  }
-}
-
-function openAndCapture(previewBtn: HTMLElement) {
-  modalObserver?.disconnect();
-
-  modalObserver = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (!(node instanceof HTMLElement)) continue;
-        const overlay = node.classList.contains('ReactModal__Overlay')
-          ? node
-          : node.querySelector<HTMLElement>('.ReactModal__Overlay');
-        if (!overlay) continue;
-        modalObserver?.disconnect();
-        waitForPreviewIframe(overlay);
-        return;
-      }
-    }
-  });
-
-  modalObserver.observe(document.body, { childList: true, subtree: true });
-  previewBtn.click();
-}
-
-// iframe srcdoc이 채워질 때까지 대기
-function waitForPreviewIframe(overlay: HTMLElement) {
-  const tryInject = (): boolean => {
-    const iframe = overlay.querySelector<HTMLIFrameElement>('iframe[name="previewIframe"]');
-    if (!iframe?.srcdoc) return false;
-    injectSrcdocToPanel(overlay, iframe.srcdoc);
-    return true;
-  };
-
-  if (tryInject()) return;
-
-  const inner = new MutationObserver(() => {
-    if (tryInject()) inner.disconnect();
-  });
-  inner.observe(overlay, { childList: true, subtree: true, attributes: true });
-}
-
-function injectSrcdocToPanel(_overlay: HTMLElement, srcdoc: string) {
-  const panelIframe = document.getElementById(PANEL_IFRAME_ID) as HTMLIFrameElement | null;
-  if (!panelIframe) return;
-
-  panelIframe.srcdoc = srcdoc;
-
-  // srcdoc 주입 후 모달 닫기 (toggle)
-  const previewBtn = document.getElementById('preview-btn');
-  if (previewBtn?.getAttribute('aria-expanded') === 'true') {
-    previewBtn.click();
-  }
-}
-
-// ── 레이아웃 활성화/비활성화 ────────────────────────────────────
+// ── 레이아웃 ─────────────────────────────────────────────────────
 
 function activateSideView() {
   const headerHeight = document.getElementById('kakaoHead')?.getBoundingClientRect().height ?? 58;
 
-  // 기존 DOM 구조를 건드리지 않고, body 오른쪽에 공간만 확보
   document.body.style.setProperty('margin-right', '50vw', 'important');
 
-  // 미리보기 패널을 오른쪽에 fixed로 고정
   const previewPanel = buildPreviewPanel();
-  previewPanel.style.position = 'fixed';
-  previewPanel.style.top = `${headerHeight}px`;
-  previewPanel.style.right = '0';
-  previewPanel.style.width = '50vw';
-  previewPanel.style.height = `calc(100vh - ${headerHeight}px)`;
-  previewPanel.style.zIndex = '1000';
-  previewPanel.style.flex = '';
-  previewPanel.style.maxWidth = '';
-  previewPanel.style.minWidth = '';
+  Object.assign(previewPanel.style, {
+    position: 'fixed',
+    top: `${headerHeight}px`,
+    right: '0',
+    width: '50vw',
+    height: `calc(100vh - ${headerHeight}px)`,
+    zIndex: '1000',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#f9f9f9',
+  });
 
   document.body.appendChild(previewPanel);
-
   injectInterceptStyle();
   sideViewActive = true;
   loadPreview();
@@ -235,9 +227,20 @@ function activateSideView() {
 }
 
 function deactivateSideView() {
-  modalObserver?.disconnect();
   detachEditorListener();
-  removeInterceptStyle();
+  srcdocTemplate = null;
+
+  // 모달이 열려있으면 먼저 닫고 CSS 제거
+  const previewBtn = document.getElementById('preview-btn');
+  if (previewBtn?.getAttribute('aria-expanded') === 'true') {
+    previewBtn.click();
+  }
+
+  // 약간 대기 후 CSS 제거 (React가 모달 닫는 시간)
+  setTimeout(() => {
+    removeInterceptStyle();
+  }, 200);
+
   document.body.style.removeProperty('margin-right');
   document.getElementById(PANEL_ID)?.remove();
   sideViewActive = false;
@@ -249,7 +252,6 @@ function toggleSideView() {
   } else {
     activateSideView();
   }
-
   updateMenuItemLabel();
 }
 
@@ -269,7 +271,7 @@ function injectToolbarButton(anchorEl: Element) {
   anchorEl.insertAdjacentElement('afterend', btn);
 }
 
-// ── 드롭다운 메뉴 아이템 ──────────────────────────────────────────
+// ── 드롭다운 메뉴 ────────────────────────────────────────────────
 
 function updateMenuItemLabel() {
   const menuItem = document.getElementById(MENU_ITEM_ID);
