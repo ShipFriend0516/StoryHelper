@@ -227,6 +227,14 @@
     "description": "Image size bulk edit prompt",
     "message": "Resize all images in the content:"
   },
+  "menu_side_view_on": {
+    "description": "Side view activate menu text",
+    "message": "Preview Side View"
+  },
+  "menu_side_view_off": {
+    "description": "Side view deactivate menu text",
+    "message": "Close Side View"
+  },
   "tooltip_alt_tag_editor": {
     "description": "Alt tag editor tooltip",
     "message": "Edit Alt Tag"
