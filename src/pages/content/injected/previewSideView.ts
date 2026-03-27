@@ -61,7 +61,11 @@ function loadInitialPreview(attempt = 0) {
 }
 
 function pollForTemplate(previewBtn: HTMLElement, attempt = 0) {
-  if (!sideViewActive) return;
+  // 사이드뷰가 닫혔으면 모달만 닫고 중단
+  if (!sideViewActive) {
+    if (previewBtn.getAttribute('aria-expanded') === 'true') previewBtn.click();
+    return;
+  }
   if (attempt > 30) return;
 
   const overlay = document.querySelector('.ReactModal__Overlay');
@@ -70,14 +74,10 @@ function pollForTemplate(previewBtn: HTMLElement, attempt = 0) {
   if (sourceIframe?.srcdoc) {
     srcdocTemplate = sourceIframe.srcdoc;
 
-    // 패널에 첫 렌더
     const panelIframe = document.getElementById(PANEL_IFRAME_ID) as HTMLIFrameElement | null;
     if (panelIframe) panelIframe.srcdoc = srcdocTemplate;
 
-    // 모달 닫기
-    if (previewBtn.getAttribute('aria-expanded') === 'true') {
-      previewBtn.click();
-    }
+    if (previewBtn.getAttribute('aria-expanded') === 'true') previewBtn.click();
     return;
   }
 
@@ -226,24 +226,42 @@ function activateSideView() {
   attachEditorListener();
 }
 
+function closePreviewModal() {
+  const overlay = document.querySelector<HTMLElement>('.ReactModal__Overlay');
+  if (!overlay) return;
+
+  // ReactModal은 overlay 클릭 또는 Escape로 닫힘
+  overlay.click();
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true, cancelable: true }));
+}
+
 function deactivateSideView() {
+  sideViewActive = false;
   detachEditorListener();
   srcdocTemplate = null;
 
-  // 모달이 열려있으면 먼저 닫고 CSS 제거
-  const previewBtn = document.getElementById('preview-btn');
-  if (previewBtn?.getAttribute('aria-expanded') === 'true') {
-    previewBtn.click();
-  }
-
-  // 약간 대기 후 CSS 제거 (React가 모달 닫는 시간)
-  setTimeout(() => {
-    removeInterceptStyle();
-  }, 200);
+  closePreviewModal();
 
   document.body.style.removeProperty('margin-right');
   document.getElementById(PANEL_ID)?.remove();
-  sideViewActive = false;
+
+  // overlay가 DOM에서 사라진 뒤 CSS 제거, 최대 2초 대기 후 강제 제거
+  waitForOverlayRemoved();
+}
+
+function waitForOverlayRemoved(attempt = 0) {
+  const overlay = document.querySelector('.ReactModal__Overlay');
+  if (!overlay) {
+    removeInterceptStyle();
+    return;
+  }
+  if (attempt > 20) {
+    // 강제 제거 후 CSS 해제
+    (overlay as HTMLElement).remove();
+    removeInterceptStyle();
+    return;
+  }
+  setTimeout(() => waitForOverlayRemoved(attempt + 1), 100);
 }
 
 function toggleSideView() {
