@@ -120,6 +120,23 @@ const SideViewPanel = () => {
       <div style={headerStyle}>
         <span>{loading ? '리렌더링 중...' : '미리보기'}</span>
         {loading && <span style={dotStyle} />}
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('sh:sideview-close-request'))}
+          style={{
+            marginLeft: 'auto',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '2px 4px',
+            color: '#999',
+            fontSize: '16px',
+            lineHeight: 1,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+          title="닫기">
+          ✕
+        </button>
       </div>
       <iframe
         id={PANEL_IFRAME_ID}

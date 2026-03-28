@@ -287,6 +287,9 @@ const previewSideView = async () => {
     loadPreview();
   });
 
+  // React 컴포넌트 닫기 버튼에서 요청 수신
+  window.addEventListener('sh:sideview-close-request', toggleSideView);
+
   // React 컴포넌트에서 panel iframe ID 요청 시 응답 (필요 시 확장)
   window.dispatchEvent(new CustomEvent('sh:sideview-ready', { detail: { iframeId: PANEL_IFRAME_ID } }));
 
