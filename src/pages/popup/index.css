@@ -68,6 +68,11 @@ button {
 .popup-container .funcList {
   padding: 0.5em;
   max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 /* 토글 스위치 스타일 */
@@ -119,10 +124,6 @@ button {
 
 .popup-container .funcList span {
   margin-top: 3px;
-}
-
-.popup-container .funcList li {
-  margin: 0 auto;
 }
 
 .btnWrapper button {

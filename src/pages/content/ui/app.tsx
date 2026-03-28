@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
+import StatusIndicator from './StatusIndicator';
+import SideViewPanel from './SideViewPanel';
 
-export default function App() {
-  useEffect(() => {
-    console.log('content view loaded');
-  }, []);
+const App = () => (
+  <>
+    <StatusIndicator />
+    <SideViewPanel />
+  </>
+);
 
-  return <div className="">content view</div>;
-}
+export default App;

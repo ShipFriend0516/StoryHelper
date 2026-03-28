@@ -19,7 +19,7 @@ export const createTooltip = (text: string): HTMLDivElement => {
   tooltip.style.borderRadius = '2px';
   tooltip.style.fontSize = '11px';
   tooltip.style.visibility = 'hidden';
-  tooltip.style.zIndex = '1000';
+  tooltip.style.zIndex = '10000';
   tooltip.style.display = 'flex';
   tooltip.style.alignItems = 'center';
   tooltip.style.gap = '4px';

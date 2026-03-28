@@ -103,6 +103,10 @@
     "description": "SEO optimization checker feature",
     "message": "SEO Optimization Checker (v1.5)"
   },
+  "feature_preview_side_view": {
+    "description": "Preview side view feature",
+    "message": "Preview Side View (v1.7)"
+  },
   "shortcut_publish": {
     "description": "Publish post shortcut",
     "message": "Publish Post"
@@ -222,6 +226,14 @@
   "prompt_image_size_bulk_edit": {
     "description": "Image size bulk edit prompt",
     "message": "Resize all images in the content:"
+  },
+  "menu_side_view_on": {
+    "description": "Side view activate menu text",
+    "message": "Preview Side View"
+  },
+  "menu_side_view_off": {
+    "description": "Side view deactivate menu text",
+    "message": "Close Side View"
   },
   "tooltip_alt_tag_editor": {
     "description": "Alt tag editor tooltip",

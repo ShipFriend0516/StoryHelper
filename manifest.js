@@ -34,15 +34,11 @@ const manifest = {
   content_scripts: [
     {
       matches: ['https://*.tistory.com/manage/newpost/*', 'https://*.tistory.com/manage/page?returnURL=/manage/pages'],
-      js: ['src/pages/contentInjected/index.js'],
+      js: ['src/pages/contentInjected/index.js', 'src/pages/contentUI/index.js'],
       // KEY for cache invalidation
       css: ['assets/css/contentStyle<KEY>.chunk.css'],
       all_frames: true,
     },
-    // {
-    //   matches: ['http://*/*', 'https://*/*', '<all_urls>'],
-    //   js: ['src/pages/contentUI/index.js'],
-    // },
   ],
   web_accessible_resources: [
     {

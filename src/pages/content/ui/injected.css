@@ -1,0 +1,150 @@
+.si-container {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9998;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.si-minimized,
+.si-icon,
+.si-toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  outline: inherit;
+}
+
+.si-minimized {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  z-index: 9998;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.si-minimized .si-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.si-minimized:hover .si-logo {
+  transform: scale(1.1);
+}
+
+.si-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #666;
+  margin-right: 8px;
+  padding-right: 8px;
+  border-right: 1px solid #ddd;
+}
+
+.si-logo {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.si-icon-wrapper {
+  position: relative;
+}
+
+.si-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #325e4b;
+}
+
+.si-icon--enabled {
+  background-color: #f0f7ff;
+  border: 1px solid #4a90e2;
+  opacity: 0.9;
+}
+
+.si-icon--enabled:hover {
+  background-color: #e8f2ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
+}
+
+.si-icon--disabled {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  opacity: 0.3;
+}
+
+.si-icon--disabled:hover {
+  background-color: #f0f0f0;
+}
+
+.si-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.si-tooltip-arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(0, 0, 0, 0.9);
+}
+
+.si-toggle-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+}
+
+.si-toggle-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
