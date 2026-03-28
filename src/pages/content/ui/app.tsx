@@ -1,5 +1,11 @@
 import StatusIndicator from './StatusIndicator';
+import SideViewPanel from './SideViewPanel';
 
-export default function App() {
-  return <StatusIndicator />;
-}
+const App = () => (
+  <>
+    <StatusIndicator />
+    <SideViewPanel />
+  </>
+);
+
+export default App;
