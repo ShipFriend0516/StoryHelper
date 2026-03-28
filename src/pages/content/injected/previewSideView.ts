@@ -1,4 +1,5 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
+import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
 const MENU_ITEM_ID = 'sh-side-view-menu-item';
 const TOOLBAR_BTN_ID = 'sh-side-view-toolbar-btn';
@@ -194,9 +195,30 @@ const toggleSideView = () => {
     activateSideView();
   }
   updateMenuItemLabel();
+  updateToolbarButtonIcon();
 };
 
 // ── 툴바 버튼 ────────────────────────────────────────────────────
+
+// altTager와 동일한 fill 아웃라인 방식 — 외곽 CW + 내부 CCW = 테두리만 채움
+const SVG_OPEN =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17">' +
+  '<path d="M21,2H3C2.449,2,2,2.449,2,3V21c0,.551,.449,1,1,1H21c.551,0,1-.449,1-1V3C22,2.449,21.551,2,21,2Z' +
+  'M3,22c-.551,0-1-.449-1-1V3c0-.551,.449-1,1-1H11V22H3Z' +
+  'M12,22V2h9c.551,0,1,.449,1,1V21c0,.551-.449,1-1,1H12Z"/>' +
+  '</svg>';
+
+const SVG_CLOSE =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17">' +
+  '<path d="M13.414,12l4.293-4.293c.391-.391,.391-1.023,0-1.414s-1.023-.391-1.414,0L12,10.586,7.707,6.293c-.391-.391-1.023-.391-1.414,0s-.391,1.023,0,1.414L10.586,12l-4.293,4.293c-.391,.391-.391,1.023,0,1.414,.195,.195,.451,.293,.707,.293s.512-.098,.707-.293L12,13.414l4.293,4.293c.195,.195,.451,.293,.707,.293s.512-.098,.707-.293c.391-.391,.391-1.023,0-1.414L13.414,12Z"/>' +
+  '</svg>';
+
+const updateToolbarButtonIcon = () => {
+  const btn = document.getElementById(TOOLBAR_BTN_ID);
+  if (!btn) return;
+  const inner = btn.querySelector('button');
+  if (inner) inner.innerHTML = sideViewActive ? SVG_CLOSE : SVG_OPEN;
+};
 
 const injectToolbarButton = (anchorEl: Element) => {
   if (document.getElementById(TOOLBAR_BTN_ID)) return;
@@ -204,10 +226,14 @@ const injectToolbarButton = (anchorEl: Element) => {
   const btn = create$('div', {
     id: TOOLBAR_BTN_ID,
     class: 'mce-widget mce-btn mce-menubtn mce-fixed-width',
-    innerHTML:
-      '<button><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg></button>',
+    innerHTML: `<button>${SVG_OPEN}</button>`,
   });
 
+  const tooltip = createTooltip(chrome.i18n.getMessage('menu_side_view_on'));
+  document.body.appendChild(tooltip);
+
+  btn.addEventListener('mouseover', () => showTooltip(tooltip, btn));
+  btn.addEventListener('mouseout', () => hideTooltip(tooltip));
   btn.addEventListener('click', toggleSideView);
   anchorEl.insertAdjacentElement('afterend', btn);
 };
