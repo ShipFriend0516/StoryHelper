@@ -279,7 +279,7 @@ const injectMenuItemTo = (panel: Element) => {
 
 const previewSideView = async () => {
   const result = await chrome.storage.local.get('func_5');
-  if (typeof result.func_5 === 'boolean' && !result.func_5) return;
+  if (result.func_5 === false) return;
 
   // React 컴포넌트에서 새로고침 요청 수신
   window.addEventListener('sh:sideview-refresh', () => {

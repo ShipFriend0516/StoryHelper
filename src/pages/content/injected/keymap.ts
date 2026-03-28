@@ -10,11 +10,7 @@ interface Shortcut {
 
 async function keyMapping() {
   const result = await chrome.storage.local.get('func_0');
-  if (typeof result.func_0 === 'boolean') {
-    if (!result.func_0) {
-      return;
-    }
-  }
+  if (result.func_0 === false) return;
 
   const editor = $('#tinymce', getEditorDocument());
 

@@ -27,7 +27,7 @@ export default function StatusIndicator() {
     chrome.storage.local.get([...keys, 'statusIndicator_minimized'], result => {
       const map: Record<string, boolean> = {};
       keys.forEach(k => {
-        map[k] = result[k] === true;
+        map[k] = result[k] !== false;
       });
       setEnabledMap(map);
       setIsMinimized(result.statusIndicator_minimized === true);

@@ -5,11 +5,7 @@ import { getEditorDocument } from '@root/utils/dom/utilDOM';
 
 async function imageSize() {
   const result = await chrome.storage.local.get('func_2');
-  if (typeof result.func_2 === 'boolean') {
-    if (!result.func_2) {
-      return;
-    }
-  }
+  if (result.func_2 === false) return;
   const anchor = document.body.querySelector('#altTager') ?? document.body.querySelector('#mceu_18');
   const imageSizer = document.createElement('div');
   imageSizer.id = 'sh-image-sizer-btn';

@@ -3,11 +3,7 @@ import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/too
 
 async function altTager() {
   const result = await chrome.storage.local.get('func_1');
-  if (typeof result.func_1 === 'boolean') {
-    if (!result.func_1) {
-      return;
-    }
-  }
+  if (result.func_1 === false) return;
   let altTag = '';
 
   const menu = $('#mceu_18', document.body);

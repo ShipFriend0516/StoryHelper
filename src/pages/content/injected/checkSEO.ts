@@ -7,11 +7,7 @@ const checkSEO = async () => {
   let hasShownReviewPromptThisSession = false;
   const result = await chrome.storage.local.get('func_4');
 
-  if (typeof result.func_4 === 'boolean') {
-    if (!result.func_4) {
-      return;
-    }
-  }
+  if (result.func_4 === false) return;
 
   const post: Document = getEditorDocument();
   const OPTIMIZED_SVG =

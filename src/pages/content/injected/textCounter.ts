@@ -3,11 +3,7 @@ import { getEditorElement } from '@root/utils/dom/utilDOM';
 
 async function textCounter() {
   const result = await chrome.storage.local.get('func_3');
-  if (typeof result.func_3 === 'boolean') {
-    if (!result.func_3) {
-      return;
-    }
-  }
+  if (result.func_3 === false) return;
 
   const post = getEditorElement();
 
