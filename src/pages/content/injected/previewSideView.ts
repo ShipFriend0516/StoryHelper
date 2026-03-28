@@ -290,7 +290,7 @@ const previewSideView = async () => {
   // React 컴포넌트에서 panel iframe ID 요청 시 응답 (필요 시 확장)
   window.dispatchEvent(new CustomEvent('sh:sideview-ready', { detail: { iframeId: PANEL_IFRAME_ID } }));
 
-  const anchor = await waitForElement('#altTager');
+  const anchor = await waitForFirstElement(['#sh-image-sizer-btn', '#altTager', '#mceu_18']);
   injectToolbarButton(anchor);
 
   const editorModeBtn = await waitForElement('#editor-mode-layer-btn');
@@ -305,6 +305,22 @@ const previewSideView = async () => {
   const existingStack = editorModeBtn.querySelector('.mce-floatpanel .mce-stack-layout');
   if (existingStack) injectMenuItemTo(existingStack);
 };
+
+// 여러 셀렉터 중 먼저 발견되는 요소 반환 (우선순위 폴백)
+const waitForFirstElement = (selectors: string[]): Promise<Element> =>
+  new Promise(resolve => {
+    const found = selectors.map(s => $(s, document.body)).find(Boolean);
+    if (found) return resolve(found);
+
+    const observer = new MutationObserver(() => {
+      const el = selectors.map(s => $(s, document.body)).find(Boolean);
+      if (el) {
+        observer.disconnect();
+        resolve(el);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
 
 const waitForElement = (selector: string): Promise<Element> =>
   new Promise(resolve => {

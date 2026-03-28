@@ -7,11 +7,11 @@ import previewSideView from '@pages/content/injected/previewSideView';
 
 (async () => {
   await keyMapping();
-  await imageSize();
-  await altTager();
+  await altTager(); // 1. #mceu_18 뒤에 삽입
+  await imageSize(); // 2. #altTager 뒤에 삽입
   await checkSEO();
   await textCounter();
-  await previewSideView();
+  await previewSideView(); // 3. #sh-image-sizer-btn 뒤에 삽입
 })();
 
 console.log('StoryHelper Load Complete');
