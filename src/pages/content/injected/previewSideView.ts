@@ -16,8 +16,13 @@ const dispatchSideViewOpen = () => window.dispatchEvent(new CustomEvent('sh:side
 
 const dispatchSideViewClose = () => window.dispatchEvent(new CustomEvent('sh:sideview-close'));
 
-const dispatchSrcdoc = (srcdoc: string) =>
+const dispatchSrcdoc = (srcdoc: string) => {
   window.dispatchEvent(new CustomEvent('sh:sideview-srcdoc', { detail: { srcdoc } }));
+  dispatchLoading(false);
+};
+
+const dispatchLoading = (loading: boolean) =>
+  window.dispatchEvent(new CustomEvent('sh:sideview-loading', { detail: { loading } }));
 
 // ── CSS 차단 (미리보기 모달 숨김) ────────────────────────────────
 
@@ -120,6 +125,7 @@ const attachEditorListener = () => {
 
     const handler = () => {
       if (debounceTimer) clearTimeout(debounceTimer);
+      dispatchLoading(true);
       debounceTimer = setTimeout(loadPreview, 1500);
     };
 

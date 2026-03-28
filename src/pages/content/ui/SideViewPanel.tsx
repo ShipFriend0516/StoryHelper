@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 const PANEL_IFRAME_ID = 'sh-preview-iframe';
+const PULSE_STYLE_ID = 'sh-pulse-style';
 
 const containerStyle = (top: number, height: string): React.CSSProperties => ({
   position: 'fixed',
@@ -18,11 +19,14 @@ const containerStyle = (top: number, height: string): React.CSSProperties => ({
 });
 
 const headerStyle: React.CSSProperties = {
-  padding: '12px 16px',
+  padding: '10px 16px',
   borderBottom: '1px solid #e0e0e0',
-  fontSize: '14px',
+  fontSize: '13px',
   color: '#666',
   flexShrink: 0,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
 };
 
 const iframeStyle: React.CSSProperties = {
@@ -31,10 +35,42 @@ const iframeStyle: React.CSSProperties = {
   width: '100%',
 };
 
+const dotStyle: React.CSSProperties = {
+  width: '8px',
+  height: '8px',
+  borderRadius: '50%',
+  backgroundColor: '#4a90e2',
+  animation: 'sh-pulse 1.2s ease-in-out infinite',
+  flexShrink: 0,
+};
+
+const injectPulseStyle = () => {
+  if (document.getElementById(PULSE_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = PULSE_STYLE_ID;
+  style.textContent = `
+    @keyframes sh-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.3; transform: scale(0.6); }
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+const removePulseStyle = () => {
+  document.getElementById(PULSE_STYLE_ID)?.remove();
+};
+
 const SideViewPanel = () => {
   const [active, setActive] = useState(false);
   const [srcdoc, setSrcdoc] = useState('');
   const [headerHeight, setHeaderHeight] = useState(58);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    injectPulseStyle();
+    return () => removePulseStyle();
+  }, []);
 
   useEffect(() => {
     const onOpen = () => {
@@ -43,20 +79,29 @@ const SideViewPanel = () => {
       setActive(true);
     };
 
-    const onClose = () => setActive(false);
+    const onClose = () => {
+      setActive(false);
+      setLoading(false);
+    };
 
     const onSrcdoc = (e: Event) => {
       setSrcdoc((e as CustomEvent<{ srcdoc: string }>).detail.srcdoc);
     };
 
+    const onLoading = (e: Event) => {
+      setLoading((e as CustomEvent<{ loading: boolean }>).detail.loading);
+    };
+
     window.addEventListener('sh:sideview-open', onOpen);
     window.addEventListener('sh:sideview-close', onClose);
     window.addEventListener('sh:sideview-srcdoc', onSrcdoc);
+    window.addEventListener('sh:sideview-loading', onLoading);
 
     return () => {
       window.removeEventListener('sh:sideview-open', onOpen);
       window.removeEventListener('sh:sideview-close', onClose);
       window.removeEventListener('sh:sideview-srcdoc', onSrcdoc);
+      window.removeEventListener('sh:sideview-loading', onLoading);
     };
   }, []);
 
@@ -72,7 +117,10 @@ const SideViewPanel = () => {
 
   return createPortal(
     <div style={containerStyle(headerHeight, `calc(100vh - ${headerHeight}px)`)}>
-      <div style={headerStyle}>사이드뷰로 미리보는 중...</div>
+      <div style={headerStyle}>
+        <span>{loading ? '리렌더링 중...' : '미리보기'}</span>
+        {loading && <span style={dotStyle} />}
+      </div>
       <iframe
         id={PANEL_IFRAME_ID}
         title="미리보기"
