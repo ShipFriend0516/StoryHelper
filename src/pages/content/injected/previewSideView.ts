@@ -304,7 +304,72 @@ const previewSideView = async () => {
 
   const existingStack = editorModeBtn.querySelector('.mce-floatpanel .mce-stack-layout');
   if (existingStack) injectMenuItemTo(existingStack);
+
+  // 첫 방문 온보딩 강조 효과
+  const { sh_onboarded } = await chrome.storage.local.get('sh_onboarded');
+  if (!sh_onboarded) {
+    await showOnboardingHighlight();
+    await chrome.storage.local.set({ sh_onboarded: true });
+  }
 };
+
+const ONBOARDING_STYLE_ID = 'sh-onboarding-style';
+const ONBOARDING_OVERLAY_ID = 'sh-onboarding-overlay';
+
+const showOnboardingHighlight = (): Promise<void> =>
+  new Promise(resolve => {
+    const selectors = ['#altTager', '#sh-image-sizer-btn', `#${TOOLBAR_BTN_ID}`];
+    const els = selectors
+      .map(s => document.querySelector<HTMLElement>(s))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (els.length === 0) {
+      resolve();
+      return;
+    }
+
+    // 세 버튼을 감싸는 단일 바운딩 박스 계산
+    const rects = els.map(el => el.getBoundingClientRect());
+    const top = Math.min(...rects.map(r => r.top));
+    const left = Math.min(...rects.map(r => r.left));
+    const right = Math.max(...rects.map(r => r.right));
+    const bottom = Math.max(...rects.map(r => r.bottom));
+    const pad = 4;
+
+    // keyframe 주입
+    const style = document.createElement('style');
+    style.id = ONBOARDING_STYLE_ID;
+    style.textContent = `
+      @keyframes sh-onboarding-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(50,94,75,0.8); }
+        50%       { box-shadow: 0 0 0 6px rgba(50,94,75,0); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 단일 오버레이 생성
+    const overlay = document.createElement('div');
+    overlay.id = ONBOARDING_OVERLAY_ID;
+    Object.assign(overlay.style, {
+      position: 'fixed',
+      top: `${top - pad}px`,
+      left: `${left - pad}px`,
+      width: `${right - left + pad * 2}px`,
+      height: `${bottom - top + pad * 2}px`,
+      border: '2px solid #325e4b',
+      borderRadius: '4px',
+      pointerEvents: 'none',
+      zIndex: '9999',
+      animation: 'sh-onboarding-pulse 1.2s ease-in-out 3',
+    });
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+      overlay.remove();
+      document.getElementById(ONBOARDING_STYLE_ID)?.remove();
+      resolve();
+    }, 3800);
+  });
 
 // 여러 셀렉터 중 먼저 발견되는 요소 반환 (우선순위 폴백)
 const waitForFirstElement = (selectors: string[]): Promise<Element> =>
