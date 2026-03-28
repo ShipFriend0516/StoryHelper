@@ -1,7 +1,6 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
-const MENU_ITEM_ID = 'sh-side-view-menu-item';
 const TOOLBAR_BTN_ID = 'sh-side-view-toolbar-btn';
 const INTERCEPT_STYLE_ID = 'sh-preview-intercept-style';
 const PANEL_IFRAME_ID = 'sh-preview-iframe';
@@ -194,7 +193,6 @@ const toggleSideView = () => {
   } else {
     activateSideView();
   }
-  updateMenuItemLabel();
   updateToolbarButtonIcon();
 };
 
@@ -238,43 +236,6 @@ const injectToolbarButton = (anchorEl: Element) => {
   anchorEl.insertAdjacentElement('afterend', btn);
 };
 
-// ── 드롭다운 메뉴 ────────────────────────────────────────────────
-
-const updateMenuItemLabel = () => {
-  const menuItem = document.getElementById(MENU_ITEM_ID);
-  if (!menuItem) return;
-  const span = menuItem.querySelector('span.mce-text');
-  if (span) {
-    span.textContent = sideViewActive
-      ? chrome.i18n.getMessage('menu_side_view_off')
-      : chrome.i18n.getMessage('menu_side_view_on');
-  }
-};
-
-const injectMenuItemTo = (panel: Element) => {
-  if (panel.querySelector(`#${MENU_ITEM_ID}`)) return;
-
-  const menuItem = create$('div', {
-    id: MENU_ITEM_ID,
-    class: 'mce-menu-item mce-menu-item-normal mce-stack-layout-item',
-    attributes: { role: 'menuitem' },
-  });
-
-  const text = create$('span', {
-    class: 'mce-text',
-    textContent: chrome.i18n.getMessage('menu_side_view_on'),
-  });
-
-  menuItem.appendChild(text);
-  panel.appendChild(menuItem);
-
-  menuItem.addEventListener('click', () => {
-    toggleSideView();
-    const modeBtn = document.getElementById('editor-mode-layer-btn-open');
-    if (modeBtn) (modeBtn as HTMLButtonElement).click();
-  });
-};
-
 // ── 진입점 ───────────────────────────────────────────────────────
 
 const previewSideView = async () => {
@@ -294,19 +255,8 @@ const previewSideView = async () => {
   window.dispatchEvent(new CustomEvent('sh:sideview-ready', { detail: { iframeId: PANEL_IFRAME_ID } }));
 
   const anchor = await waitForFirstElement(['#sh-image-sizer-btn', '#altTager', '#mceu_18']);
+  if (!anchor) return;
   injectToolbarButton(anchor);
-
-  const editorModeBtn = await waitForElement('#editor-mode-layer-btn');
-
-  const observer = new MutationObserver(() => {
-    const stackLayout = editorModeBtn.querySelector('.mce-floatpanel .mce-stack-layout');
-    if (stackLayout) injectMenuItemTo(stackLayout);
-  });
-
-  observer.observe(editorModeBtn, { childList: true, subtree: true });
-
-  const existingStack = editorModeBtn.querySelector('.mce-floatpanel .mce-stack-layout');
-  if (existingStack) injectMenuItemTo(existingStack);
 
   // 첫 방문 온보딩 강조 효과
   const { sh_onboarded } = await chrome.storage.local.get('sh_onboarded');
@@ -374,36 +324,29 @@ const showOnboardingHighlight = (): Promise<void> =>
     }, 3800);
   });
 
-// 여러 셀렉터 중 먼저 발견되는 요소 반환 (우선순위 폴백)
-const waitForFirstElement = (selectors: string[]): Promise<Element> =>
+// 여러 셀렉터 중 먼저 발견되는 요소 반환 (우선순위 폴백, 최대 10초)
+const waitForFirstElement = (selectors: string[], timeoutMs = 10000): Promise<Element | null> =>
   new Promise(resolve => {
     const found = selectors.map(s => $(s, document.body)).find(Boolean);
     if (found) return resolve(found);
 
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
     const observer = new MutationObserver(() => {
       const el = selectors.map(s => $(s, document.body)).find(Boolean);
       if (el) {
+        if (timer) clearTimeout(timer);
         observer.disconnect();
         resolve(el);
       }
     });
-    observer.observe(document.body, { childList: true, subtree: true });
-  });
-
-const waitForElement = (selector: string): Promise<Element> =>
-  new Promise(resolve => {
-    const el = $(selector, document.body);
-    if (el) return resolve(el);
-
-    const observer = new MutationObserver(() => {
-      const found = $(selector, document.body);
-      if (found) {
-        observer.disconnect();
-        resolve(found);
-      }
-    });
 
     observer.observe(document.body, { childList: true, subtree: true });
+
+    timer = setTimeout(() => {
+      observer.disconnect();
+      resolve(null);
+    }, timeoutMs);
   });
 
 export default previewSideView;
