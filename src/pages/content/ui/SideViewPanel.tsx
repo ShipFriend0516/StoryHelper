@@ -142,7 +142,7 @@ const SideViewPanel = () => {
         id={PANEL_IFRAME_ID}
         title="미리보기"
         srcDoc={srcdoc || undefined}
-        sandbox="allow-scripts allow-same-origin"
+        sandbox="allow-scripts"
         style={iframeStyle}
       />
     </div>,
