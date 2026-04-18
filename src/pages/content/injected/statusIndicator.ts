@@ -1,5 +1,5 @@
 import { $, create$ } from '@root/utils/dom/utilDOM';
-import { AltTag, Command, ImageScale, SEO, TextCounter } from '@pages/content/injected/components/SVG';
+import { AltTag, Command, ImageScale, SEO, SidebarView, TextCounter } from '@pages/content/injected/components/SVG';
 import { FEATURES } from '@src/shared/config/features';
 
 interface FunctionStatus {
@@ -15,6 +15,7 @@ const FEATURE_ICONS: Record<string, string> = {
   func_2: ImageScale,
   func_3: TextCounter,
   func_4: SEO,
+  func_5: SidebarView,
 };
 
 const statusIndicator = async () => {
