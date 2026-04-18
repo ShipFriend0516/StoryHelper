@@ -1,11 +1,39 @@
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import 'webextension-polyfill';
+import { FEATURES } from '@src/shared/config/features';
 
-chrome.runtime.setUninstallURL('https://storyhelper.shipfriend.dev/feedback');
+const uninstallURL = 'https://storyhelper.shipfriend.dev/feedback';
+const introduceURL = 'https://storyhelper.shipfriend.dev/introduce';
+
+chrome.runtime.setUninstallURL(uninstallURL);
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
-    chrome.tabs.create({ url: 'https://storyhelper.shipfriend.dev/introduce' });
+    // Open the introduction page on first install
+    chrome.tabs.create({ url: introduceURL });
+
+    // On First Install, set the default settings about feature flags
+    const defaultFeatureSettings: Record<string, boolean> = FEATURES.reduce(
+      (acc, feature) => {
+        acc[feature.key] = false;
+        return acc;
+      },
+      {} as Record<string, boolean>,
+    );
+
+    console.log('Setting default feature settings:', defaultFeatureSettings);
+
+    chrome.storage.local.set(defaultFeatureSettings);
+  }
+});
+
+reloadOnUpdate('pages/background');
+
+/**
+ * Extension reloading is necessary because the browser automatically caches the css.
+      func_4: false,
+      func_5: false,
+    });
   }
 });
 

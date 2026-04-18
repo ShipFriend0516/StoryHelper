@@ -98,6 +98,9 @@ const updatePreviewFromTemplate = () => {
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(srcdocTemplate, 'text/html');
+  const base = doc.createElement('base');
+  base.href = window.location.origin + '/';
+  doc.head.insertBefore(base, doc.head.firstChild);
 
   const contentArea = doc.querySelector('.tt_article_useless_p_margin');
   if (contentArea) contentArea.innerHTML = editorContent;
