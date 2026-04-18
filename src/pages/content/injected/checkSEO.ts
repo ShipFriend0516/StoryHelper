@@ -54,13 +54,24 @@ const checkSEO = async () => {
   const checkSEOOptimize = async () => {
     // 검증 실행
     const taggedArr = checkImgAltTags(post);
-    const h1Tag = checkH1Tag(post);
+    const h1Status = checkH1Tag(post);
     const fixedImageHeight = checkFixedImageHeight(post);
     const errors = [];
+    const isEditorEmpty =
+      post.body.textContent?.trim().length === 0 &&
+      post.body.getElementsByTagName('img').length === 0 &&
+      post.body.querySelectorAll('h1, h2, h3, h4, h5, h6').length === 0;
+
+    if (isEditorEmpty) {
+      alertBox.style.visibility = 'hidden';
+      hasCountedSuccessThisSession = false;
+      return;
+    }
+
     if (taggedArr.includes(false)) {
       errors.push(chrome.i18n.getMessage('seo_missing_alt'));
     }
-    if (!h1Tag) {
+    if (h1Status === 'multiple') {
       errors.push(chrome.i18n.getMessage('seo_multiple_h1'));
     }
     if (!fixedImageHeight) {
@@ -129,9 +140,13 @@ const checkImgAltTags = (post: Document) => {
   return altTags;
 };
 
-const checkH1Tag = (post: Document) => {
+type H1CheckResult = 'empty' | 'ok' | 'multiple';
+
+const checkH1Tag = (post: Document): H1CheckResult => {
   const h2Tags: HTMLHeadingElement[] = Array.from(post.body.getElementsByTagName('h2'));
-  return h2Tags.length === 1;
+  if (h2Tags.length === 0) return 'empty';
+  if (h2Tags.length === 1) return 'ok';
+  return 'multiple';
 };
 
 const checkFixedImageHeight = (post: Document) => {
