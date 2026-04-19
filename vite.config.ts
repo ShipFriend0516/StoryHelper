@@ -41,6 +41,18 @@ export default defineConfig({
         options: resolve(pagesDir, 'options', 'index.html'),
         sidepanel: resolve(pagesDir, 'sidepanel', 'index.html'),
       },
+      plugins: [
+        {
+          name: 'iife-content-scripts',
+          generateBundle(_options, bundle) {
+            for (const chunk of Object.values(bundle)) {
+              if (chunk.type === 'chunk' && /content/i.test(chunk.fileName)) {
+                chunk.code = `(()=>{\n${chunk.code}\n})();`;
+              }
+            }
+          },
+        },
+      ],
       output: {
         entryFileNames: 'src/pages/[name]/index.js',
         chunkFileNames: isDev ? 'assets/js/[name].js' : 'assets/js/[name].[hash].js',
