@@ -13,23 +13,29 @@ async function imageSize() {
     onClick: () => {
       const userInput = window.prompt(chrome.i18n.getMessage('prompt_image_size_bulk_edit'), '');
 
-      const imageSize: number = parseInt(userInput);
-      if (userInput !== null && !isNaN(imageSize)) {
-        const post = getEditorDocument();
-        if (!post?.body) return;
-        const imgs: HTMLImageElement[] = getEditorImages(post);
-        imgs.forEach(img => {
-          const originWidth: number = parseInt(img.dataset.originWidth);
-          const originHeight: number = parseInt(img.dataset.originHeight);
-          const ratio = originHeight / originWidth;
-          const imageWidth = imageSize;
-          const imageHeight = Math.floor(ratio * imageWidth);
-          img.width = imageSize;
-          img.height = imageHeight;
-        });
-      } else {
+      if (userInput === null) return;
+      const imageSize = Number(userInput);
+      if (!Number.isSafeInteger(imageSize) || imageSize <= 0) {
         alert(chrome.i18n.getMessage('error_invalid_number'));
+        return;
       }
+
+      const post = getEditorDocument();
+      if (!post?.body) return;
+      getEditorImages(post).forEach(img => {
+        const dimensions = [
+          [Number(img.dataset.originWidth), Number(img.dataset.originHeight)],
+          [img.naturalWidth, img.naturalHeight],
+          [img.width, img.height],
+        ].find(([width, height]) => Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0);
+        if (!dimensions) return;
+
+        const [width, height] = dimensions;
+        const imageHeight = Math.max(1, Math.floor((height / width) * imageSize));
+        if (!Number.isFinite(imageHeight)) return;
+        img.width = imageSize;
+        img.height = imageHeight;
+      });
     },
   });
 }
