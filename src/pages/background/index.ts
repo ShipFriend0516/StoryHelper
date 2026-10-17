@@ -12,10 +12,10 @@ chrome.runtime.onInstalled.addListener(details => {
     // Open the introduction page on first install
     chrome.tabs.create({ url: introduceURL });
 
-    // Enable every feature on first install
+    // Enable all features except preview side view on first install
     const defaultFeatureSettings: Record<string, boolean> = FEATURES.reduce(
       (acc, feature) => {
-        acc[feature.key] = true;
+        acc[feature.key] = feature.key !== 'func_5';
         return acc;
       },
       {} as Record<string, boolean>,
