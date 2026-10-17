@@ -51,3 +51,30 @@ describe('추가 단축키', () => {
     await expect(keyMapping()).resolves.toBeUndefined();
   });
 });
+
+describe.each(['기본', '사용자 지정'])('%s 단축키 매칭', mode => {
+  // 추가 보조키 오작동과 숫자 키 미매칭 회귀를 실제 발행 버튼 동작으로 검증.
+  test.each([
+    { combo: 'Ctrl + P', code: 'KeyP', ctrlKey: true, shiftKey: true, active: false },
+    { combo: 'Ctrl + P', code: 'KeyP', ctrlKey: true, altKey: true, active: false },
+    { combo: 'Ctrl + P', code: 'KeyP', ctrlKey: true, metaKey: true, active: false },
+    { combo: 'Ctrl + Shift + P', code: 'KeyP', ctrlKey: true, shiftKey: true, active: true },
+    { combo: 'Ctrl + P', code: 'KeyP', metaKey: true, active: true },
+    { combo: 'Ctrl + 1', code: 'Digit1', ctrlKey: true, active: true },
+    { combo: 'Ctrl + 1', code: 'Numpad1', ctrlKey: true, active: true },
+  ])('$combo를 입력 보조키와 숫자 키에 맞춰 실행한다: $code', async ({ combo, active, ...event }) => {
+    const editor = createEditor();
+    document.body.insertAdjacentHTML('beforeend', '<button id="publish-layer-btn">발행</button>');
+    const publish = screen.getByRole('button', { name: '발행' });
+    publish.addEventListener('click', () => {
+      screen.getByRole('status').textContent = '발행 실행';
+    });
+    const shortcut = { keys: combo, shortcut_id: 'PUBLISH', ...(mode === '사용자 지정' ? { custom: combo } : {}) };
+    vi.spyOn(chrome.storage.local, 'get').mockImplementation(async () => ({ func_0: true, shortcuts: [shortcut] }));
+    await keyMapping();
+
+    editor.dispatchEvent(new KeyboardEvent('keydown', { ...event, cancelable: true }));
+
+    expect(screen.getByRole('status').textContent).toBe(active ? '발행 실행' : '');
+  });
+});

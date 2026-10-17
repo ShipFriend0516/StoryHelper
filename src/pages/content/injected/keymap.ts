@@ -9,6 +9,28 @@ interface Shortcut {
   shortcut_id: string; // ID for logic (locale-independent)
 }
 
+const matchesShortcut = (event: KeyboardEvent, combination: string): boolean => {
+  const keys = combination.split(' + ');
+  const wantsCtrl = keys.includes('Ctrl');
+  const wantsMeta = keys.includes('Meta') || keys.includes('Command');
+  // Preserve Ctrl/Command interchangeability, but reject extra modifier keys.
+  const primaryMatches =
+    wantsCtrl && wantsMeta
+      ? event.ctrlKey && event.metaKey
+      : wantsCtrl || wantsMeta
+        ? event.ctrlKey !== event.metaKey
+        : !event.ctrlKey && !event.metaKey;
+  if (!primaryMatches || keys.includes('Shift') !== event.shiftKey || keys.includes('Alt') !== event.altKey)
+    return false;
+
+  const mainKeys = keys.filter(key => !['Ctrl', 'Meta', 'Command', 'Shift', 'Alt'].includes(key));
+  if (mainKeys.length !== 1) return false;
+  const [key] = mainKeys;
+  if (/^[a-z]$/i.test(key)) return event.code === `Key${key.toUpperCase()}`;
+  if (/^\d$/.test(key)) return event.code === `Digit${key}` || event.code === `Numpad${key}`;
+  return event.code === key;
+};
+
 async function keyMapping() {
   if (!(await isFeatureEnabled('func_0'))) return;
 
@@ -18,64 +40,23 @@ async function keyMapping() {
   async function getCustomShortcuts() {
     try {
       const response = await chrome.storage.local.get('shortcuts');
-      if (response.shortcuts) return response.shortcuts;
-      else {
-        ('Error');
-      }
+      return response.shortcuts ?? [];
     } catch (error) {
       console.error(error);
+      return [];
     }
   }
 
   const shortcuts: Shortcut[] = await getCustomShortcuts();
 
   function handleKeyDown(event: KeyboardEvent) {
-    if (shortcuts)
-      shortcuts.forEach(shortcut => {
-        if (shortcut.custom) {
-          const customKeys = shortcut.custom.split(' + ');
-          const isSatisfied = customKeys.every(key => {
-            switch (key) {
-              case 'Ctrl':
-              case 'Meta':
-              case 'Command':
-                return event.metaKey || event.ctrlKey;
-              case 'Shift':
-                return event.shiftKey;
-              case 'Alt':
-                return event.altKey;
-              default:
-                return event.code === `Key${key.toUpperCase()}`;
-            }
-          });
-
-          if (isSatisfied) {
-            event.preventDefault();
-            handleShortcut(shortcut);
-          }
-        } else if (shortcut.keys) {
-          const defaultKeys = shortcut.keys.split(' + ');
-          const isSatisfied = defaultKeys.every(key => {
-            switch (key) {
-              case 'Shift':
-                return event.shiftKey;
-              case 'Alt':
-                return event.altKey;
-              case 'Ctrl':
-              case 'Meta':
-              case 'Command':
-                return event.metaKey || event.ctrlKey;
-              default:
-                return event.code === `Key${key.toUpperCase()}`;
-            }
-          });
-
-          if (isSatisfied) {
-            event.preventDefault();
-            handleShortcut(shortcut);
-          }
-        }
-      });
+    shortcuts.forEach(shortcut => {
+      const combination = shortcut.custom || shortcut.keys;
+      if (combination && matchesShortcut(event, combination)) {
+        event.preventDefault();
+        handleShortcut(shortcut);
+      }
+    });
   }
 
   function handleShortcut(shortcut: Shortcut) {

@@ -89,7 +89,7 @@ const FunctionDetailSetting = () => {
   const handleCustomKeyMap = (e: React.KeyboardEvent) => {
     e.preventDefault();
     const allowedKeys =
-      /^(Key|Digit|Bracket|Comma|Period|Slash|Backslash|Semicolon|Quote|Backquote|Minus|Equal|Enter|Backspace|Tab|ShiftLeft|ShiftRight|ControlLeft|ControlRight|AltLeft|AltRight|MetaLeft|MetaRight).*$/;
+      /^(Key|Digit|Numpad|Bracket|Comma|Period|Slash|Backslash|Semicolon|Quote|Backquote|Minus|Equal|Enter|Backspace|Tab|ShiftLeft|ShiftRight|ControlLeft|ControlRight|AltLeft|AltRight|MetaLeft|MetaRight).*$/;
 
     if (!allowedKeys.test(e.code)) {
       return;
@@ -99,8 +99,12 @@ const FunctionDetailSetting = () => {
     let key;
     if (keyCode.startsWith('KEY')) {
       key = keyCode.slice(3);
-    } else if (['METALEFT', 'SHIFTLEFT', 'CONTROLLEFT', 'ALTLEFT'].includes(keyCode)) {
-      key = keyCode.slice(0, -4);
+    } else if (keyCode.startsWith('DIGIT')) {
+      key = keyCode.slice(5);
+    } else if (/^NUMPAD[0-9]$/.test(keyCode)) {
+      key = keyCode.slice(6);
+    } else if (!/^(META|SHIFT|CONTROL|ALT)(LEFT|RIGHT)$/.test(keyCode)) {
+      key = e.code;
     }
     if (e.ctrlKey && !customKeys.includes('Ctrl')) {
       setCustomKeys(prev => [...prev, 'Ctrl']);
@@ -114,7 +118,7 @@ const FunctionDetailSetting = () => {
     if (e.altKey && !customKeys.includes('Alt')) {
       setCustomKeys(prev => [...prev, 'Alt']);
     }
-    if (key !== 'CONTROL' && key !== 'ALT' && key !== 'SHIFT' && key !== 'META' && !customKeys.includes(key)) {
+    if (key && !customKeys.includes(key)) {
       setCustomKeys(prev => [...prev, key]);
     }
   };
