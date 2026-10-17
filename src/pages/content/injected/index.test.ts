@@ -64,4 +64,41 @@ describe('기능 초기화', () => {
     await vi.waitFor(() => expect(screen.getByText('글자 수: 3')).toBeTruthy());
     expect(screen.queryAllByRole('button')).toHaveLength(0);
   });
+
+  // 공통 설정 조회로 바꿔도 미설정 기능은 활성화되고 명시적으로 끈 기능은 표시되지 않아야 함.
+  test.each([
+    { enabled: undefined, buttons: 3 },
+    { enabled: false, buttons: 2 },
+  ])('저장된 기능 활성화 상태에 맞춰 편집 버튼을 표시한다: $enabled', async ({ enabled, buttons }) => {
+    document.body.insertAdjacentHTML('afterbegin', '<button id="mceu_18">기존 도구</button>');
+    vi.mocked(chrome.storage.local.get).mockImplementation(async () => ({ ...settings, func_1: enabled }));
+
+    await import('./index');
+
+    await vi.waitFor(() => {
+      expect(screen.getByText('글자 수: 3')).toBeTruthy();
+      expect(screen.getAllByRole('button')).toHaveLength(buttons);
+    });
+  });
+
+  // 툴바·이미지 조회 공통화 이후에도 각 버튼이 본문 이미지에 기존 편집을 적용해야 함.
+  test('공통 툴바의 버튼으로 대체 텍스트와 이미지 크기를 수정한다', async () => {
+    document.body.insertAdjacentHTML('afterbegin', '<button id="mceu_18">기존 도구</button>');
+    const editorDocument = document.querySelector('iframe').contentDocument;
+    const image = editorDocument.createElement('img');
+    image.dataset.originWidth = '800';
+    image.dataset.originHeight = '600';
+    editorDocument.body.appendChild(image);
+    vi.spyOn(window, 'prompt').mockReturnValueOnce('이미지 설명').mockReturnValueOnce('400');
+
+    await import('./index');
+
+    await vi.waitFor(() => expect(screen.getAllByRole('button')).toHaveLength(3));
+    const [, altButton, resizeButton] = screen.getAllByRole('button');
+    altButton.click();
+    expect(image.alt).toBe('이미지 설명');
+    resizeButton.click();
+    expect(image.width).toBe(400);
+    expect(image.height).toBe(300);
+  });
 });

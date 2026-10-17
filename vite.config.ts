@@ -32,7 +32,7 @@ export default defineConfig({
     emptyOutDir: !isDev,
     rollupOptions: {
       input: {
-        contentInjected: resolve(pagesDir, 'content', 'injected', 'index.ts'),
+        contentInjected: resolve(pagesDir, 'content', 'injected', 'bootstrap.ts'),
         contentUI: resolve(pagesDir, 'content', 'ui', 'index.ts'),
         background: resolve(pagesDir, 'background', 'index.ts'),
         contentStyle: resolve(pagesDir, 'content', 'style.scss'),

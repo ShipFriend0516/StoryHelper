@@ -1,3 +1,4 @@
+import { isFeatureEnabled } from '@src/shared/utils/features';
 import { $, getEditorElement } from '@root/utils/dom/utilDOM';
 
 interface Shortcut {
@@ -9,8 +10,7 @@ interface Shortcut {
 }
 
 async function keyMapping() {
-  const result = await chrome.storage.local.get('func_0');
-  if (result.func_0 === false) return;
+  if (!(await isFeatureEnabled('func_0'))) return;
 
   const editor = getEditorElement();
   if (!editor) return;

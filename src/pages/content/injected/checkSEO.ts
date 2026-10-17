@@ -1,13 +1,12 @@
+import { isFeatureEnabled } from '@src/shared/utils/features';
 import { debounce } from '@pages/content/util/optimize';
-import { create$, getEditorDocument } from '@root/utils/dom/utilDOM';
+import { create$, getEditorDocument, getEditorImages } from '@root/utils/dom/utilDOM';
 import { showReviewPrompt, shouldShowReviewPrompt } from '@pages/content/injected/reviewPrompt';
 
 const checkSEO = async () => {
   let hasCountedSuccessThisSession = false;
   let hasShownReviewPromptThisSession = false;
-  const result = await chrome.storage.local.get('func_4');
-
-  if (result.func_4 === false) return;
+  if (!(await isFeatureEnabled('func_4'))) return;
 
   const post = getEditorDocument();
   if (!post?.body) return;
@@ -133,7 +132,7 @@ const checkSEO = async () => {
 };
 
 const checkImgAltTags = (post: Document) => {
-  const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
+  const imgs: HTMLImageElement[] = getEditorImages(post);
   const altTags = Array(imgs.length).fill(false);
   imgs.forEach(img => {
     altTags[imgs.indexOf(img)] = img.hasAttribute('alt');
@@ -151,7 +150,7 @@ const checkH1Tag = (post: Document): H1CheckResult => {
 };
 
 const checkFixedImageHeight = (post: Document) => {
-  const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
+  const imgs: HTMLImageElement[] = getEditorImages(post);
 
   if (imgs.length === 0) return true;
   return imgs.every(img => img.hasAttribute('height') && img.height > 0);

@@ -1,9 +1,9 @@
+import { isFeatureEnabled } from '@src/shared/utils/features';
 import { debounce } from '@pages/content/util/optimize';
 import { getEditorElement } from '@root/utils/dom/utilDOM';
 
 async function textCounter() {
-  const result = await chrome.storage.local.get('func_3');
-  if (result.func_3 === false) return;
+  if (!(await isFeatureEnabled('func_3'))) return;
 
   const post = getEditorElement();
   const counterAnchor = document.querySelector('.btn-category');
