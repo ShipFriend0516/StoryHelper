@@ -1,4 +1,4 @@
-import { $, getEditorDocument } from '@root/utils/dom/utilDOM';
+import { $, getEditorElement } from '@root/utils/dom/utilDOM';
 
 interface Shortcut {
   keys: string;
@@ -12,7 +12,8 @@ async function keyMapping() {
   const result = await chrome.storage.local.get('func_0');
   if (result.func_0 === false) return;
 
-  const editor = $('#tinymce', getEditorDocument());
+  const editor = getEditorElement();
+  if (!editor) return;
 
   async function getCustomShortcuts() {
     try {
@@ -107,7 +108,16 @@ async function keyMapping() {
   }
 
   function handleImageUploadShortcut() {
-    const targetButton = $('#mceu_0-open') as HTMLInputElement;
+    const imageUploadButton = document.getElementById('attach-image');
+    if (imageUploadButton) {
+      imageUploadButton.click();
+      return;
+    }
+
+    const targetButton =
+      document.getElementById('mceu_0-open') ??
+      document.querySelector<HTMLElement>('.tox-tbtn[data-mce-name="image"]') ??
+      document.querySelector('.mce-i-image')?.closest('button');
     if (targetButton) {
       targetButton.click();
       const imageUploadButton = $('#attach-image') as HTMLInputElement;
@@ -146,16 +156,18 @@ async function keyMapping() {
   }
 
   function handleEditorModeShortcut() {
-    const writeModeMenu = $('#editor-mode-layer-btn-open') as HTMLInputElement;
+    const writeModeMenu = document.getElementById('editor-mode-layer-btn-open');
+    const editorContainer = document.getElementById('editorContainer');
+    if (!writeModeMenu || !editorContainer?.firstElementChild) return;
     writeModeMenu.click();
-    const editorMode = $('#editorContainer').firstElementChild.className;
+    const editorMode = editorContainer.firstElementChild.className;
     const isNormal = editorMode === 'kakao-editor';
     const normal = $('#editor-mode-kakao') as HTMLInputElement;
     const html = $('#editor-mode-html') as HTMLInputElement;
     if (isNormal) {
-      html.click();
+      html?.click();
     } else {
-      normal.click();
+      normal?.click();
     }
   }
 

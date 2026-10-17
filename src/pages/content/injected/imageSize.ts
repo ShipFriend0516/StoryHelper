@@ -1,12 +1,11 @@
-// 사이드바 코드
-
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
-import { getEditorDocument } from '@root/utils/dom/utilDOM';
+import { getEditorDocument, getEditorToolbarAnchor } from '@root/utils/dom/utilDOM';
 
 async function imageSize() {
   const result = await chrome.storage.local.get('func_2');
   if (result.func_2 === false) return;
-  const anchor = document.body.querySelector('#altTager') ?? document.body.querySelector('#mceu_18');
+  const anchor = document.body.querySelector('#altTager') ?? getEditorToolbarAnchor();
+  if (!anchor) return;
   const imageSizer = document.createElement('div');
   imageSizer.id = 'sh-image-sizer-btn';
   imageSizer.classList.add('mce-widget', 'mce-btn', 'mce-menubtn', 'mce-fixed-width');
@@ -37,6 +36,7 @@ async function imageSize() {
     const imageSize: number = parseInt(userInput);
     if (userInput !== null && !isNaN(imageSize)) {
       const post = getEditorDocument();
+      if (!post?.body) return;
       const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
       imgs.forEach(img => {
         const originWidth: number = parseInt(img.dataset.originWidth);

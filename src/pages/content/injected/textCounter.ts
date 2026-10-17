@@ -6,6 +6,8 @@ async function textCounter() {
   if (result.func_3 === false) return;
 
   const post = getEditorElement();
+  const counterAnchor = document.querySelector('.btn-category');
+  if (!post || !counterAnchor) return;
 
   const countWords = () => {
     const text = post.innerText.trim();
@@ -22,7 +24,7 @@ async function textCounter() {
     }
 
     // 새로운 글자 수 표시 요소 추가
-    document.body.getElementsByClassName('btn-category')[0].appendChild(counter);
+    counterAnchor.appendChild(counter);
   };
 
   countWords();
