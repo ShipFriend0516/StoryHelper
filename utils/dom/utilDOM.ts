@@ -96,6 +96,10 @@ export const getEditorDocument = (): Document | null => {
   return iframe?.contentDocument || null;
 };
 
+export const getEditorImages = (editorDocument: Document): HTMLImageElement[] => {
+  return Array.from(editorDocument.body.getElementsByTagName('img'));
+};
+
 export const getEditorElement = (): HTMLElement | null => {
   const doc = getEditorDocument();
   return doc?.getElementById('tinymce') || null;

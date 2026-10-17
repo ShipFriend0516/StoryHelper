@@ -1,5 +1,7 @@
-import { $, create$, EDITOR_TOOLBAR_ANCHOR_SELECTORS } from '@root/utils/dom/utilDOM';
-import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
+import { isFeatureEnabled } from '@src/shared/utils/features';
+import { $, EDITOR_TOOLBAR_ANCHOR_SELECTORS, getEditorIframe } from '@root/utils/dom/utilDOM';
+import { createToolbarButton } from '@pages/content/util/toolbar';
+import { injectStyle } from '@src/shared/utils/style';
 
 const TOOLBAR_BTN_ID = 'sh-side-view-toolbar-btn';
 const INTERCEPT_STYLE_ID = 'sh-preview-intercept-style';
@@ -27,11 +29,10 @@ const dispatchLoading = (loading: boolean) =>
 // ── CSS 차단 (미리보기 모달 숨김) ────────────────────────────────
 
 const injectInterceptStyle = () => {
-  if (document.getElementById(INTERCEPT_STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = INTERCEPT_STYLE_ID;
-  style.textContent = `.ReactModal__Overlay { visibility: hidden !important; pointer-events: none !important; }`;
-  document.head.appendChild(style);
+  injectStyle(
+    INTERCEPT_STYLE_ID,
+    `.ReactModal__Overlay { visibility: hidden !important; pointer-events: none !important; }`,
+  );
 };
 
 const removeInterceptStyle = () => {
@@ -92,7 +93,7 @@ const pollForTemplate = (previewBtn: HTMLElement, attempt = 0) => {
 const updatePreviewFromTemplate = () => {
   if (!srcdocTemplate) return;
 
-  const editorIframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
+  const editorIframe = getEditorIframe();
   const editorContent = editorIframe?.contentDocument?.body?.innerHTML ?? '';
   const postTitle = (document.getElementById('post-title-inp') as HTMLTextAreaElement | null)?.value ?? '';
 
@@ -118,7 +119,7 @@ const attachEditorListener = () => {
     if (!sideViewActive) return;
     if (attempt > 25) return;
 
-    const iframe = document.getElementById('editor-tistory_ifr') as HTMLIFrameElement | null;
+    const iframe = getEditorIframe();
     const iframeBody = iframe?.contentDocument?.body ?? null;
 
     if (!iframeBody) {
@@ -224,26 +225,18 @@ const updateToolbarButtonIcon = () => {
 const injectToolbarButton = (anchorEl: Element) => {
   if (document.getElementById(TOOLBAR_BTN_ID)) return;
 
-  const btn = create$('div', {
+  createToolbarButton(anchorEl, {
     id: TOOLBAR_BTN_ID,
-    class: 'mce-widget mce-btn mce-menubtn mce-fixed-width',
-    innerHTML: `<button>${SVG_OPEN}</button>`,
+    icon: SVG_OPEN,
+    tooltip: chrome.i18n.getMessage('menu_side_view_on'),
+    onClick: toggleSideView,
   });
-
-  const tooltip = createTooltip(chrome.i18n.getMessage('menu_side_view_on'));
-  document.body.appendChild(tooltip);
-
-  btn.addEventListener('mouseover', () => showTooltip(tooltip, btn));
-  btn.addEventListener('mouseout', () => hideTooltip(tooltip));
-  btn.addEventListener('click', toggleSideView);
-  anchorEl.insertAdjacentElement('afterend', btn);
 };
 
 // ── 진입점 ───────────────────────────────────────────────────────
 
 const previewSideView = async () => {
-  const result = await chrome.storage.local.get('func_5');
-  if (result.func_5 === false) return;
+  if (!(await isFeatureEnabled('func_5'))) return;
 
   // React 컴포넌트에서 새로고침 요청 수신
   window.addEventListener('sh:sideview-refresh', () => {
@@ -293,15 +286,15 @@ const showOnboardingHighlight = (): Promise<void> =>
     const pad = 4;
 
     // keyframe 주입
-    const style = document.createElement('style');
-    style.id = ONBOARDING_STYLE_ID;
-    style.textContent = `
+    injectStyle(
+      ONBOARDING_STYLE_ID,
+      `
       @keyframes sh-onboarding-pulse {
         0%, 100% { box-shadow: 0 0 0 0 rgba(50,94,75,0.8); }
         50%       { box-shadow: 0 0 0 6px rgba(50,94,75,0); }
       }
-    `;
-    document.head.appendChild(style);
+    `,
+    );
 
     // 단일 오버레이 생성
     const overlay = document.createElement('div');

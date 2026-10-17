@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { injectStyle } from '@src/shared/utils/style';
 
 const PANEL_IFRAME_ID = 'sh-preview-iframe';
 const PULSE_STYLE_ID = 'sh-pulse-style';
@@ -45,16 +46,15 @@ const dotStyle: React.CSSProperties = {
 };
 
 const injectPulseStyle = () => {
-  if (document.getElementById(PULSE_STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = PULSE_STYLE_ID;
-  style.textContent = `
+  injectStyle(
+    PULSE_STYLE_ID,
+    `
     @keyframes sh-pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.3; transform: scale(0.6); }
     }
-  `;
-  document.head.appendChild(style);
+  `,
+  );
 };
 
 const removePulseStyle = () => {
