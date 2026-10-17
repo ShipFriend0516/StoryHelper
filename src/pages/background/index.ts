@@ -12,10 +12,10 @@ chrome.runtime.onInstalled.addListener(details => {
     // Open the introduction page on first install
     chrome.tabs.create({ url: introduceURL });
 
-    // On First Install, set the default settings about feature flags
+    // Enable every feature on first install
     const defaultFeatureSettings: Record<string, boolean> = FEATURES.reduce(
       (acc, feature) => {
-        acc[feature.key] = false;
+        acc[feature.key] = true;
         return acc;
       },
       {} as Record<string, boolean>,
