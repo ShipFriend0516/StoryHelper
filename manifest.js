@@ -39,7 +39,7 @@ const manifest = {
   web_accessible_resources: [
     {
       resources: ['assets/js/*.js', 'assets/css/*.css', 'icon-128.png', 'icon-34.png'],
-      matches: ['*://*/*'],
+      matches: ['https://*.tistory.com/*'],
     },
   ],
 };
