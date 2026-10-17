@@ -6,12 +6,14 @@ import checkSEO from '@pages/content/injected/checkSEO';
 import previewSideView from '@pages/content/injected/previewSideView';
 
 (async () => {
-  await keyMapping();
-  await altTager(); // 1. #mceu_18 뒤에 삽입
-  await imageSize(); // 2. #altTager 뒤에 삽입
-  await checkSEO();
-  await textCounter();
-  await previewSideView(); // 3. #sh-image-sizer-btn 뒤에 삽입
-})();
+  // Preserve toolbar insertion order while isolating initialization failures.
+  for (const feature of [keyMapping, altTager, imageSize, checkSEO, textCounter, previewSideView]) {
+    try {
+      await feature();
+    } catch (error) {
+      console.error(`[StoryHelper] Failed to initialize ${feature.name}`, error);
+    }
+  }
 
-console.log('StoryHelper Load Complete');
+  console.log('StoryHelper Load Complete');
+})();

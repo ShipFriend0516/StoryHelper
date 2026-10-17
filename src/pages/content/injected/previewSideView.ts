@@ -1,4 +1,4 @@
-import { $, create$ } from '@root/utils/dom/utilDOM';
+import { $, create$, EDITOR_TOOLBAR_ANCHOR_SELECTORS } from '@root/utils/dom/utilDOM';
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
 const TOOLBAR_BTN_ID = 'sh-side-view-toolbar-btn';
@@ -257,7 +257,7 @@ const previewSideView = async () => {
   // React 컴포넌트에서 panel iframe ID 요청 시 응답 (필요 시 확장)
   window.dispatchEvent(new CustomEvent('sh:sideview-ready', { detail: { iframeId: PANEL_IFRAME_ID } }));
 
-  const anchor = await waitForFirstElement(['#sh-image-sizer-btn', '#altTager', '#mceu_18']);
+  const anchor = await waitForFirstElement(['#sh-image-sizer-btn', '#altTager', ...EDITOR_TOOLBAR_ANCHOR_SELECTORS]);
   if (!anchor) return;
   injectToolbarButton(anchor);
 

@@ -100,3 +100,18 @@ export const getEditorElement = (): HTMLElement | null => {
   const doc = getEditorDocument();
   return doc?.getElementById('tinymce') || null;
 };
+
+// TinyMCE-generated IDs can change between editor versions.
+export const EDITOR_TOOLBAR_ANCHOR_SELECTORS = [
+  '#mceu_18',
+  '.mce-toolbar .mce-btn:last-child',
+  '.tox-toolbar__group .tox-tbtn:last-child',
+];
+
+export const getEditorToolbarAnchor = (): Element | null => {
+  for (const selector of EDITOR_TOOLBAR_ANCHOR_SELECTORS) {
+    const anchor = document.querySelector(selector);
+    if (anchor) return anchor;
+  }
+  return null;
+};

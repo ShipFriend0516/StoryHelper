@@ -1,4 +1,4 @@
-import { $, create$, getEditorDocument } from '@root/utils/dom/utilDOM';
+import { create$, getEditorDocument, getEditorToolbarAnchor } from '@root/utils/dom/utilDOM';
 import { createTooltip, showTooltip, hideTooltip } from '@pages/content/util/tooltip';
 
 async function altTager() {
@@ -6,7 +6,8 @@ async function altTager() {
   if (result.func_1 === false) return;
   let altTag = '';
 
-  const menu = $('#mceu_18', document.body);
+  const menu = getEditorToolbarAnchor();
+  if (!menu) return;
   const altTager = create$('div', {
     id: 'altTager',
     class: 'mce-widget mce-btn mce-menubtn mce-fixed-width',
@@ -37,6 +38,7 @@ async function altTager() {
     altTag = userInput || '';
     if (userInput !== null) {
       const post = getEditorDocument();
+      if (!post?.body) return;
       const imgs: HTMLImageElement[] = Array.from(post.body.getElementsByTagName('img'));
       imgs.forEach(img => (img.alt = userInput));
     }
