@@ -5,9 +5,7 @@ export const $ = (className: string, reference?: Document | HTMLElement): Elemen
 };
 
 export const $$ = (className: string, reference?: Document | HTMLElement): NodeListOf<Element> => {
-  if (reference)
-    (reference as Document).querySelectorAll(className) || (reference as HTMLElement).querySelectorAll(className);
-  else return document.querySelectorAll(className);
+  return (reference ?? document).querySelectorAll(className);
 };
 
 interface ElementProperties {
