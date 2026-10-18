@@ -338,5 +338,9 @@
   "console_custom_shortcut": {
     "description": "커스텀 단축키 콘솔 로그",
     "message": "Custom shortcut: $1"
+  },
+  "onboarding_toolbar_hint": {
+    "description": "에디터 첫 방문 온보딩 안내 문구",
+    "message": "StoryHelper 도구가 여기에 추가됐어요. 버튼에 마우스를 올리면 기능 설명이 보여요."
   }
 }
