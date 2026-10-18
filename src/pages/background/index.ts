@@ -1,11 +1,13 @@
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import 'webextension-polyfill';
 import { FEATURES } from '@src/shared/config/features';
+import { INSTALLED_AT_KEY, updateUninstallURL } from './uninstallURL';
 
 const uninstallURL = 'https://storyhelper.shipfriend.dev/feedback';
 const introduceURL = 'https://storyhelper.shipfriend.dev/introduce';
 
-chrome.runtime.setUninstallURL(uninstallURL);
+// Refresh on every service worker start so the elapsed days stay current
+updateUninstallURL(uninstallURL);
 
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
@@ -23,7 +25,9 @@ chrome.runtime.onInstalled.addListener(details => {
 
     console.log('Setting default feature settings:', defaultFeatureSettings);
 
-    chrome.storage.local.set(defaultFeatureSettings);
+    chrome.storage.local
+      .set({ ...defaultFeatureSettings, [INSTALLED_AT_KEY]: Date.now() })
+      .then(() => updateUninstallURL(uninstallURL));
   }
 });
 
