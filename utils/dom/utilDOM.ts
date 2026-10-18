@@ -5,9 +5,7 @@ export const $ = (className: string, reference?: Document | HTMLElement): Elemen
 };
 
 export const $$ = (className: string, reference?: Document | HTMLElement): NodeListOf<Element> => {
-  if (reference)
-    (reference as Document).querySelectorAll(className) || (reference as HTMLElement).querySelectorAll(className);
-  else return document.querySelectorAll(className);
+  return (reference ?? document).querySelectorAll(className);
 };
 
 interface ElementProperties {
@@ -96,7 +94,26 @@ export const getEditorDocument = (): Document | null => {
   return iframe?.contentDocument || null;
 };
 
+export const getEditorImages = (editorDocument: Document): HTMLImageElement[] => {
+  return Array.from(editorDocument.body.getElementsByTagName('img'));
+};
+
 export const getEditorElement = (): HTMLElement | null => {
   const doc = getEditorDocument();
   return doc?.getElementById('tinymce') || null;
+};
+
+// TinyMCE-generated IDs can change between editor versions.
+export const EDITOR_TOOLBAR_ANCHOR_SELECTORS = [
+  '#mceu_18',
+  '.mce-toolbar .mce-btn:last-child',
+  '.tox-toolbar__group .tox-tbtn:last-child',
+];
+
+export const getEditorToolbarAnchor = (): Element | null => {
+  for (const selector of EDITOR_TOOLBAR_ANCHOR_SELECTORS) {
+    const anchor = document.querySelector(selector);
+    if (anchor) return anchor;
+  }
+  return null;
 };

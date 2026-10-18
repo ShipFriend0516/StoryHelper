@@ -4,14 +4,24 @@ import altTager from '@pages/content/injected/altTager';
 import imageSize from '@pages/content/injected/imageSize';
 import checkSEO from '@pages/content/injected/checkSEO';
 import previewSideView from '@pages/content/injected/previewSideView';
+import onboarding from '@pages/content/injected/onboarding';
 
 (async () => {
-  await keyMapping();
-  await altTager(); // 1. #mceu_18 뒤에 삽입
-  await imageSize(); // 2. #altTager 뒤에 삽입
-  await checkSEO();
-  await textCounter();
-  await previewSideView(); // 3. #sh-image-sizer-btn 뒤에 삽입
-})();
+  // Preserve toolbar insertion order while isolating initialization failures.
+  for (const feature of [keyMapping, altTager, imageSize, checkSEO, textCounter, previewSideView]) {
+    try {
+      await feature();
+    } catch (error) {
+      console.error(`[StoryHelper] Failed to initialize ${feature.name}`, error);
+    }
+  }
 
-console.log('StoryHelper Load Complete');
+  // Runs after every feature so it can highlight whichever toolbar buttons were added.
+  try {
+    await onboarding();
+  } catch (error) {
+    console.error('[StoryHelper] Failed to show onboarding', error);
+  }
+
+  console.log('StoryHelper Load Complete');
+})();

@@ -1,4 +1,5 @@
-import { $, getEditorDocument } from '@root/utils/dom/utilDOM';
+import { isFeatureEnabled } from '@src/shared/utils/features';
+import { $, getEditorElement } from '@root/utils/dom/utilDOM';
 
 interface Shortcut {
   keys: string;
@@ -8,73 +9,54 @@ interface Shortcut {
   shortcut_id: string; // ID for logic (locale-independent)
 }
 
-async function keyMapping() {
-  const result = await chrome.storage.local.get('func_0');
-  if (result.func_0 === false) return;
+const matchesShortcut = (event: KeyboardEvent, combination: string): boolean => {
+  const keys = combination.split(' + ');
+  const wantsCtrl = keys.includes('Ctrl');
+  const wantsMeta = keys.includes('Meta') || keys.includes('Command');
+  // Preserve Ctrl/Command interchangeability, but reject extra modifier keys.
+  const primaryMatches =
+    wantsCtrl && wantsMeta
+      ? event.ctrlKey && event.metaKey
+      : wantsCtrl || wantsMeta
+        ? event.ctrlKey !== event.metaKey
+        : !event.ctrlKey && !event.metaKey;
+  if (!primaryMatches || keys.includes('Shift') !== event.shiftKey || keys.includes('Alt') !== event.altKey)
+    return false;
 
-  const editor = $('#tinymce', getEditorDocument());
+  const mainKeys = keys.filter(key => !['Ctrl', 'Meta', 'Command', 'Shift', 'Alt'].includes(key));
+  if (mainKeys.length !== 1) return false;
+  const [key] = mainKeys;
+  if (/^[a-z]$/i.test(key)) return event.code === `Key${key.toUpperCase()}`;
+  if (/^\d$/.test(key)) return event.code === `Digit${key}` || event.code === `Numpad${key}`;
+  return event.code === key;
+};
+
+async function keyMapping() {
+  if (!(await isFeatureEnabled('func_0'))) return;
+
+  const editor = getEditorElement();
+  if (!editor) return;
 
   async function getCustomShortcuts() {
     try {
       const response = await chrome.storage.local.get('shortcuts');
-      if (response.shortcuts) return response.shortcuts;
-      else {
-        ('Error');
-      }
+      return response.shortcuts ?? [];
     } catch (error) {
       console.error(error);
+      return [];
     }
   }
 
   const shortcuts: Shortcut[] = await getCustomShortcuts();
 
   function handleKeyDown(event: KeyboardEvent) {
-    if (shortcuts)
-      shortcuts.forEach(shortcut => {
-        if (shortcut.custom) {
-          const customKeys = shortcut.custom.split(' + ');
-          const isSatisfied = customKeys.every(key => {
-            switch (key) {
-              case 'Ctrl':
-              case 'Meta':
-              case 'Command':
-                return event.metaKey || event.ctrlKey;
-              case 'Shift':
-                return event.shiftKey;
-              case 'Alt':
-                return event.altKey;
-              default:
-                return event.code === `Key${key.toUpperCase()}`;
-            }
-          });
-
-          if (isSatisfied) {
-            event.preventDefault();
-            handleShortcut(shortcut);
-          }
-        } else if (shortcut.keys) {
-          const defaultKeys = shortcut.keys.split(' + ');
-          const isSatisfied = defaultKeys.every(key => {
-            switch (key) {
-              case 'Shift':
-                return event.shiftKey;
-              case 'Alt':
-                return event.altKey;
-              case 'Ctrl':
-              case 'Meta':
-              case 'Command':
-                return event.metaKey || event.ctrlKey;
-              default:
-                return event.code === `Key${key.toUpperCase()}`;
-            }
-          });
-
-          if (isSatisfied) {
-            event.preventDefault();
-            handleShortcut(shortcut);
-          }
-        }
-      });
+    shortcuts.forEach(shortcut => {
+      const combination = shortcut.custom || shortcut.keys;
+      if (combination && matchesShortcut(event, combination)) {
+        event.preventDefault();
+        handleShortcut(shortcut);
+      }
+    });
   }
 
   function handleShortcut(shortcut: Shortcut) {
@@ -107,7 +89,16 @@ async function keyMapping() {
   }
 
   function handleImageUploadShortcut() {
-    const targetButton = $('#mceu_0-open') as HTMLInputElement;
+    const imageUploadButton = document.getElementById('attach-image');
+    if (imageUploadButton) {
+      imageUploadButton.click();
+      return;
+    }
+
+    const targetButton =
+      document.getElementById('mceu_0-open') ??
+      document.querySelector<HTMLElement>('.tox-tbtn[data-mce-name="image"]') ??
+      document.querySelector('.mce-i-image')?.closest('button');
     if (targetButton) {
       targetButton.click();
       const imageUploadButton = $('#attach-image') as HTMLInputElement;
@@ -146,16 +137,18 @@ async function keyMapping() {
   }
 
   function handleEditorModeShortcut() {
-    const writeModeMenu = $('#editor-mode-layer-btn-open') as HTMLInputElement;
+    const writeModeMenu = document.getElementById('editor-mode-layer-btn-open');
+    const editorContainer = document.getElementById('editorContainer');
+    if (!writeModeMenu || !editorContainer?.firstElementChild) return;
     writeModeMenu.click();
-    const editorMode = $('#editorContainer').firstElementChild.className;
+    const editorMode = editorContainer.firstElementChild.className;
     const isNormal = editorMode === 'kakao-editor';
     const normal = $('#editor-mode-kakao') as HTMLInputElement;
     const html = $('#editor-mode-html') as HTMLInputElement;
     if (isNormal) {
-      html.click();
+      html?.click();
     } else {
-      normal.click();
+      normal?.click();
     }
   }
 

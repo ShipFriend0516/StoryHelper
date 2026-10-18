@@ -338,5 +338,9 @@
   "console_custom_shortcut": {
     "description": "Custom shortcut console log",
     "message": "Custom shortcut: $1"
+  },
+  "onboarding_toolbar_hint": {
+    "description": "Onboarding hint on first editor visit",
+    "message": "StoryHelper tools were added here. Hover over each button to see what it does."
   }
 }

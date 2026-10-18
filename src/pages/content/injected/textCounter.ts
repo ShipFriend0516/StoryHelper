@@ -1,11 +1,13 @@
+import { isFeatureEnabled } from '@src/shared/utils/features';
 import { debounce } from '@pages/content/util/optimize';
 import { getEditorElement } from '@root/utils/dom/utilDOM';
 
 async function textCounter() {
-  const result = await chrome.storage.local.get('func_3');
-  if (result.func_3 === false) return;
+  if (!(await isFeatureEnabled('func_3'))) return;
 
   const post = getEditorElement();
+  const counterAnchor = document.querySelector('.btn-category');
+  if (!post || !counterAnchor) return;
 
   const countWords = () => {
     const text = post.innerText.trim();
@@ -22,7 +24,7 @@ async function textCounter() {
     }
 
     // 새로운 글자 수 표시 요소 추가
-    document.body.getElementsByClassName('btn-category')[0].appendChild(counter);
+    counterAnchor.appendChild(counter);
   };
 
   countWords();
