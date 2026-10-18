@@ -1,4 +1,4 @@
-import blogIcon from '@assets/img/blog.ico';
+import blogIcon from '@assets/img/blog.png';
 import { getAriaLabel, getMessage } from '@src/shared/utils/i18n';
 
 interface CreditProps {
@@ -81,7 +81,7 @@ const Credit = ({ version }: CreditProps) => {
           />
         </a>
         <a
-          href={'https://shipfriend.vercel.app/'}
+          href={'https://shipfriend.dev/'}
           target="_blank"
           rel="noreferrer"
           aria-label={getAriaLabel('developer_blog')}
